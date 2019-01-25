@@ -26,25 +26,7 @@
 	  <developerConnection>scm:git:git@github.com:AvanzaBank/gs-test.git</developerConnection>
 	  <url>git@github.com:AvanzaBank/gs-test.git</url>
 	</scm>
-	<!--
-	<repositories>
-		<repository>
-			<id>gigaspaces</id>
-			<name>GigaSpaces</name>
-			<url>http://maven-repository.openspaces.org/</url>
-		</repository>
-	</repositories>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-	-->
+
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -52,22 +34,6 @@
 			<!--  javadoc, source and gpg plugin from above -->
 			<!-- All artifacts deployed to the central repository must be signed -->
 			<plugins>
-				<!--
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.5</version>
-					<executions>
-						<execution>
-							<id>sign-artifacts</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>sign</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				-->
 				
 				<!-- This plugin makes sure that a source jar is always built together 
 					with the binary jar -->
@@ -127,7 +93,10 @@
 		<!-- -Xdoclint:NONE ignores validation errors in javadoc -->
 		<additionalparam>-Xdoclint:none</additionalparam>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+
 		<spring.version>4.3.19.RELEASE</spring.version>
 		<spring.groupId>org.springframework</spring.groupId>
 		<slf4j.version>1.7.10</slf4j.version>
@@ -358,12 +327,21 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+					<!--<release>11</release>-->
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<showDeprecation>true</showDeprecation>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+						<version>6.2</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<!-- Configures jar creation and manifest contents -->
