@@ -15,6 +15,11 @@
  */
 package com.avanza.gs.test;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.cluster.ClusterInfo;
 import org.openspaces.core.properties.BeanLevelProperties;
@@ -22,11 +27,7 @@ import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainer;
 import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainerProvider;
 import org.openspaces.pu.container.support.CompoundProcessingUnitContainer;
 import org.springframework.context.ApplicationContext;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import com.gigaspaces.security.directory.DefaultCredentialsProvider;
 
 /**
  * 
@@ -45,6 +46,7 @@ public final class PartitionedPu implements PuRunner {
 	private final String lookupGroupName;
 	private final boolean autostart;
 	private final ApplicationContext parentContext;
+	private final boolean useAuthentication;
 
 	public PartitionedPu(PartitionedPuConfigurer configurer) {
 		this.puXmlPath = configurer.puXmlPath;
@@ -55,6 +57,7 @@ public final class PartitionedPu implements PuRunner {
 		this.lookupGroupName = configurer.lookupGroupName;
 		this.autostart = configurer.autostart;
 		this.parentContext = configurer.parentContext;
+		this.useAuthentication = configurer.useAuthentication;
 		this.contextProperties.put("spaceName", UniqueSpaceNameLookup.getSpaceNameWithSequence(configurer.spaceName));
 		this.contextProperties.put("gs.space.url.arg.groups", lookupGroupName);
 		this.contextProperties.put("gs.space.url.arg.timeout", "10");
@@ -77,7 +80,24 @@ public final class PartitionedPu implements PuRunner {
 		if (parentContext != null) {
 			provider.setParentContext(parentContext);
 		}
+		if (useAuthentication) {
+			enableAuthentication(provider);
+		}
 		container = (CompoundProcessingUnitContainer) provider.createContainer();
+	}
+
+	private void enableAuthentication(IntegratedProcessingUnitContainerProvider provider) {
+		final Properties contextProperties = provider.getBeanLevelProperties().getContextProperties();
+		contextProperties.put("com.gs.security.security-manager.class", new SecurityManagerForTests());
+		// SecurityManagerForTests will accept all credentials, so these can be anything
+		provider.setCredentialsProvider(new DefaultCredentialsProvider("", ""));
+
+		// Override default timeouts that are being used when security is enabled
+		// during PU startup.
+		// SpaceRemoteOperationsExecutorsClusterConfig defaults to 20s
+		contextProperties.setProperty("space-config.proxy.router.active-server-lookup-timeout", "300");
+		// ClusterXML::createActiveElectConfig used by ActiveElectionManager::sleepYieldTime defaults to 1s
+		contextProperties.setProperty("cluster-config.groups.group.fail-over-policy.active-election.yield-time", "100");
 	}
 
 	private ClusterInfo createClusterInfo() {
