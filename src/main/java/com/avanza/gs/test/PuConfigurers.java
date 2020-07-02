@@ -17,6 +17,22 @@ package com.avanza.gs.test;
 
 public class PuConfigurers {
 
+	static {
+		// This needs to be executed before anything about GS is initialized,
+		// such as the static block in JVMGlobalLus
+		setSystemProperties();
+	}
+
+	private static void setSystemProperties() {
+		if (System.getProperty("java.rmi.server.hostname") == null) {
+			// Overrides values resolved by GigaSpaces
+			// {@link NIOInfoHelper#getLocalHostAddress} and
+			// {@link NIOInfoHelper#getLocalHostName} via
+			// {@link BootUtil#getHost}
+			System.setProperty("java.rmi.server.hostname", "localhost");
+		}
+	}
+
 	public static PartitionedPuConfigurer partitionedPu(String puXmlPath) {
 		return new PartitionedPuConfigurer(puXmlPath);
 	}
