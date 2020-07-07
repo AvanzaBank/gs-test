@@ -90,7 +90,10 @@ public final class PartitionedPu implements PuRunner {
 		final Properties contextProperties = provider.getBeanLevelProperties().getContextProperties();
 		contextProperties.put("com.gs.security.security-manager.class", new SecurityManagerForTests());
 		// SecurityManagerForTests will accept all credentials, so these can be anything
-		provider.setCredentialsProvider(new DefaultCredentialsProvider("", ""));
+		final DefaultCredentialsProvider credentialsProvider = new DefaultCredentialsProvider("", "");
+		provider.setCredentialsProvider(credentialsProvider);
+		// Despite its name, this property is read by com.avanza.astrix.gs.ClusteredProxyCacheImpl
+		System.getProperties().put("com.gs.security.credentials-provider.class", credentialsProvider);
 
 		// Override default timeouts that are being used when security is enabled
 		// during PU startup.
