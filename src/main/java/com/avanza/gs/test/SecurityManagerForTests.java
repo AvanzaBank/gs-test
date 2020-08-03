@@ -31,6 +31,9 @@ import com.gigaspaces.security.directory.User;
 import com.gigaspaces.security.directory.UserDetails;
 
 public class SecurityManagerForTests implements SecurityManager, Serializable {
+
+	public static final String TEST_USER = "testuser";
+	public static final String TEST_PASS = "testpass";
 	private static final Authority[] TEST_AUTHORITIES = Stream.of(SpaceAuthority.SpacePrivilege.values())
 			.map(SpaceAuthority::new)
 			.toArray(Authority[]::new);
@@ -47,8 +50,19 @@ public class SecurityManagerForTests implements SecurityManager, Serializable {
 	}
 
 	@Override
-	public Authentication authenticate(UserDetails userDetails) throws AuthenticationException {
-		// During tests, we allow any username & password
-		return new Authentication(new User(userDetails.getUsername(), userDetails.getPassword(), TEST_AUTHORITIES));
+	public Authentication authenticate(UserDetails u) throws AuthenticationException {
+		if (!TEST_USER.equals(u.getUsername())) {
+			throw new AuthenticationException(
+					"Incorrect auth username for test login. "
+							+ "Expected [" + TEST_USER + "] but received [" + u.getUsername() + "]"
+			);
+		}
+		if (!TEST_PASS.equals(u.getPassword())) {
+			throw new AuthenticationException(
+					"Incorrect auth password for test login. "
+							+ "Expected [" + TEST_PASS + "] but received [" + u.getPassword() + "]"
+			);
+		}
+		return new Authentication(new User(TEST_USER, TEST_PASS, TEST_AUTHORITIES));
 	}
 }
