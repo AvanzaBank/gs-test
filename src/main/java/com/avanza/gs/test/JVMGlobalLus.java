@@ -36,8 +36,8 @@ public final class JVMGlobalLus {
 	private static final IJSpace DUMMY_SPACE;
 	
 	static {
+		GsNetworkOverride.setSystemProperties();
 		DUMMY_SPACE = new UrlSpaceConfigurer("/./dummy-space-to-keep-lus-running")
-
 				.lookupGroups(LOOKUP_GROUP_NAME)
 				.create();
 	}
@@ -45,7 +45,4 @@ public final class JVMGlobalLus {
 	public static String getLookupGroupName() {
 		return LOOKUP_GROUP_NAME;
 	}
-	
-	
-
 }
