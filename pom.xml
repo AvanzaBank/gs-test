@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.avanza.gs</groupId>
 	<artifactId>gs-test</artifactId>
@@ -13,68 +13,77 @@
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
-	<developers>
-		<developer>
-			<name>Elias Lindholm</name>
-			<email>elias.lindholm@avanza.se</email>
-			<organization>Avanza</organization>
-			<organizationUrl>https://github.com/AvanzaBank</organizationUrl>
-		</developer>
-  	</developers>
+
+	<organization>
+		<name>Avanza Bank AB</name>
+		<url>https://github.com/AvanzaBank/</url>
+	</organization>
+
 	<scm>
-	  <connection>scm:git:git@github.com:AvanzaBank/gs-test.git</connection>
-	  <developerConnection>scm:git:git@github.com:AvanzaBank/gs-test.git</developerConnection>
-	  <url>git@github.com:AvanzaBank/gs-test.git</url>
+		<connection>scm:git:git@github.com:AvanzaBank/gs-test.git</connection>
+		<developerConnection>scm:git:git@github.com:AvanzaBank/gs-test.git</developerConnection>
+		<url>git@github.com:AvanzaBank/gs-test.git</url>
 	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
 	<profiles>
 		<profile>
 			<id>release</id>
 			<build>
-			<!--  javadoc, source and gpg plugin from above -->
-			<!-- All artifacts deployed to the central repository must be signed -->
-			<plugins>
-				<!--
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.5</version>
-					<executions>
-						<execution>
-							<id>sign-artifacts</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>sign</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				-->
-	
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<configuration>
-						<excludePackageNames>example*:se*</excludePackageNames>
-						<aggregate>true</aggregate>
-						<show>public</show>
-						<nohelp>true</nohelp>
-						<header>Gigaspaces Test Utilities ${project.version}</header>
-						<footer>Gigaspaces Test Utilities ${project.version}</footer>
-						<doctitle>Gigaspaces Test Utilities ${project.version}</doctitle>
-					</configuration>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
+				<!--  javadoc, source and gpg plugin from above -->
+				<!-- All artifacts deployed to the central repository must be signed -->
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<excludePackageNames>example*:se*</excludePackageNames>
+							<aggregate>true</aggregate>
+							<show>public</show>
+							<nohelp>true</nohelp>
+							<header>Gigaspaces Test Utilities ${project.version}</header>
+							<footer>Gigaspaces Test Utilities ${project.version}</footer>
+							<doctitle>Gigaspaces Test Utilities ${project.version}</doctitle>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
 			</build>
 		</profile>
 	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -110,6 +119,28 @@
 		<additionalparam>-Xdoclint:none</additionalparam>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+
+		<maven-assembly-plugin.version>2.2.1</maven-assembly-plugin.version>
+		<maven-clean-plugin.version>2.5</maven-clean-plugin.version>
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<maven-dependency-plugin.version>2.8</maven-dependency-plugin.version>
+		<maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
+		<maven-install-plugin.version>2.3.1</maven-install-plugin.version>
+		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
+		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+		<maven-plugin-plugin.version>2.7</maven-plugin-plugin.version>
+		<maven-release-plugin.version>2.5.1</maven-release-plugin.version>
+		<maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+		<maven-site-plugin.version>2.2</maven-site-plugin.version>
+		<maven-source-plugin.version>2.1.2</maven-source-plugin.version>
+		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+		<maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+		<versions-maven-plugin.version>2.5</versions-maven-plugin.version>
+		<exec-maven-plugin.version>1.2</exec-maven-plugin.version>
+		<maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
+		<license-maven-plugin.version>2.11</license-maven-plugin.version>
+		<maven-scm-plugin.version>1.4</maven-scm-plugin.version>
+
 		<spring.version>4.1.9.RELEASE</spring.version>
 		<spring.groupId>org.springframework</spring.groupId>
 		<slf4j.version>1.7.25</slf4j.version>
@@ -118,7 +149,7 @@
 		<hamcrest.version>1.3</hamcrest.version>
 		<mockito.version>2.23.0</mockito.version>
 	</properties>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -197,112 +228,102 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<!-- define version numbers for all core plugins to have deterministic 
+				<!-- define version numbers for all core plugins to have deterministic
 					build -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-shade-plugin</artifactId>
-					<version>2.4.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-antrun-plugin</artifactId>
-					<version>1.3</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.2.1</version>
+					<version>${maven-assembly-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>2.5</version>
+					<version>${maven-clean-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
+					<version>${maven-compiler-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.8</version>
+					<version>${maven-dependency-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.1</version>
+					<version>${maven-deploy-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
-					<version>2.3.1</version>
+					<version>${maven-install-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.3.1</version>
+					<version>${maven-jar-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
+					<version>${maven-javadoc-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
-					<version>2.7</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-rar-plugin</artifactId>
-					<version>2.2</version>
+					<version>${maven-plugin-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>${maven-release-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.6</version>
+					<version>${maven-resources-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>2.2</version>
+					<version>${maven-site-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>2.1.2</version>
+					<version>${maven-source-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.22.2</version>
+					<version>${maven-surefire-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>2.22.2</version>
+					<version>${maven-failsafe-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.5</version>
+					<version>${versions-maven-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
-					<version>1.2</version>
+					<version>${exec-maven-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>${maven-enforcer-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>com.mycila</groupId>
 					<artifactId>license-maven-plugin</artifactId>
-					<version>2.11</version>
+					<version>${license-maven-plugin.version}</version>
 					<configuration>
 						<header>src/license/apache2.txt</header>
 						<properties>
@@ -317,6 +338,11 @@
 							<include>**/*.java</include>
 						</includes>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-scm-plugin</artifactId>
+					<version>${maven-scm-plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -359,6 +385,14 @@
 				</executions>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+				</configuration>
+			</plugin>
+
 			<!-- This plugin makes sure that a source jar is always built together
 				with the binary jar -->
 			<plugin>
@@ -375,22 +409,11 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>1.4.1</version>
-				<executions>
-					<execution>
-						<id>default-cli</id>
-						<configuration>
-							<rules>
-								<alwaysPass/>
-							</rules>
-						</configuration>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-					</execution>
-				</executions>
+				<configuration>
+					<skip>true</skip>
+					<rules />
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -406,9 +429,20 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.4</version>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/Test*.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*TestCase.java</include>
+						<include>**/*Tests.java</include>
+					</includes>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
