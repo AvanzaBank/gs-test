@@ -14,6 +14,14 @@
 		</license>
 	</licenses>
 
+	<developers>
+		<developer>
+			<name>Elias Lindholm</name>
+			<email>elias.lindholm@avanza.se</email>
+			<organization>Avanza</organization>
+			<organizationUrl>https://github.com/AvanzaBank</organizationUrl>
+		</developer>
+	</developers>
 	<organization>
 		<name>Avanza Bank AB</name>
 		<url>https://github.com/AvanzaBank/</url>
