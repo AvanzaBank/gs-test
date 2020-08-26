@@ -114,6 +114,8 @@ public final class GsNetworkOverride {
 			testMulticastOnInterface(nic);
 			return true;
 		} catch (Exception e) {
+			LOG.log(Level.FINER, "Unable to determine if NIC=[" + nic + "] supports multicast, message=["
+								 + e != null ? e.getMessage() : null + "]", e);
 			return false;
 		}
 	}
