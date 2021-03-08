@@ -134,7 +134,7 @@ public class RunningPuImpl implements RunningPu {
     @Override
     public Collection<ListableBeanFactory> getApplicationContexts() {
         return IntStream.range(0, runner.getNumInstances())
-                .mapToObj(runner::getPrimaryInstanceApplicationContext)
+                .mapToObj(partition -> runner.getPrimaryInstanceApplicationContext(partition))
                 .collect(Collectors.toList());
     }
 }
