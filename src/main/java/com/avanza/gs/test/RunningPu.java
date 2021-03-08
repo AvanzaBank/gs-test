@@ -15,6 +15,8 @@
  */
 package com.avanza.gs.test;
 
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.rules.TestRule;
 import org.openspaces.core.GigaSpace;
 import org.springframework.beans.factory.BeanFactory;
@@ -22,7 +24,7 @@ import org.springframework.beans.factory.ListableBeanFactory;
 
 import java.util.Collection;
 
-public interface RunningPu extends TestRule, AutoCloseable  {
+public interface RunningPu extends BeforeEachCallback, AfterEachCallback, TestRule, AutoCloseable  {
 	
 	// TODO: Rename to ManagedPu
 

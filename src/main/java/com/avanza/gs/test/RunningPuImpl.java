@@ -15,6 +15,7 @@
  */
 package com.avanza.gs.test;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.openspaces.core.GigaSpace;
@@ -71,8 +72,8 @@ public class RunningPuImpl implements RunningPu {
         abstract State start(PuRunner runner) throws Exception;
 
         abstract State stop(PuRunner runner) throws Exception;
-    }
 
+    }
     public RunningPuImpl(PuRunner runner) {
         this.runner = runner;
         this.state = State.NEW;
@@ -98,6 +99,22 @@ public class RunningPuImpl implements RunningPu {
             }
 
         };
+    }
+
+    @Override
+    public void beforeEach(ExtensionContext context) throws Exception {
+            if (runner.autostart()) {
+                start();
+            }
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) throws Exception {
+        try {
+            stop();
+        } catch (Exception e) {
+            // Ignore
+        }
     }
 
     @Override

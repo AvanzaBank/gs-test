@@ -17,6 +17,9 @@ package com.avanza.gs.test;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
@@ -24,7 +27,7 @@ import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;
 import org.openspaces.core.space.UrlSpaceConfigurer;
 
-public class EmbeddedSpace implements TestRule {
+public class EmbeddedSpace implements AfterEachCallback, BeforeEachCallback, TestRule {
 
 	private final UrlSpaceConfigurer urlSpaceConfigurer;
 	private final GigaSpace gigaSpace;
@@ -69,4 +72,13 @@ public class EmbeddedSpace implements TestRule {
 		};
 	}
 
+	@Override
+	public void beforeEach(ExtensionContext context) throws Exception {
+		start();
+	}
+
+	@Override
+	public void afterEach(ExtensionContext context) throws Exception {
+		destroy();
+	}
 }
