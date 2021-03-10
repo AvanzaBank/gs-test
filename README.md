@@ -7,6 +7,9 @@
 
 The GS-Test library contains utilities designed to simplify testing of applications implemented using GigaSpaces.
 
+## Previous verisons
+
+[v0.1.x](https://github.com/AvanzaBank/gs-test/tree/v0.1.x) - Based on GigaSpaces 10.1.1 and Java 8
 
 #### Running an embedded Processing Unit
 The `PuConfigurers` class contains factory methods for builders for different types of processing units (partitioned pu, mirror pu). Those can be used to create an embedded processing unit (`RunningPu`). The `RunningPu` extends the `org.junit.rules.TestRule` interface which makes it easy to run a processing unit "around" either an entire test class using `@ClassRule`, or around each test case using `@Rule`.
@@ -55,6 +58,8 @@ GS-Test packed as a single jar file. Maven users can get GS-Test using the follo
   <version>0.1.0</version>
 </dependency>
 ``` 
+
+
 
 ## License
 The GS-Test library is released under version 2.0 of the [Apache License](http://www.apache.org/licenses/LICENSE-2.0).
