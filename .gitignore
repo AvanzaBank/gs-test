@@ -3,4 +3,4 @@ target
 .settings
 .classpath
 .idea
-gs-test.iml
+*.iml
