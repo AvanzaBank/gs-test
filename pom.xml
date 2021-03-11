@@ -140,7 +140,7 @@
 		<gigaspaces.version>14.5.0</gigaspaces.version>
 		<junit.version>4.13.1</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
-		<mockito.version>2.23.0</mockito.version>
+		<mockito.version>3.8.0</mockito.version>
 	</properties>
 
 	<dependencyManagement>
