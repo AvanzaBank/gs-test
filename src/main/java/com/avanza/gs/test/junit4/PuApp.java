@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.avanza.gs.test;
+package com.avanza.gs.test.junit4;
+
+import com.avanza.gs.test.PartitionedPu;
 
 import java.io.IOException;
 
-/**
- * @deprecated use {@link com.avanza.gs.test.junit4.PuApp} for JUnit4
- */
-@Deprecated
 public class PuApp {
 
 	private PartitionedPu partitionedPu;

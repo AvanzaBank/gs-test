@@ -15,126 +15,14 @@
  */
 package com.avanza.gs.test;
 
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-import org.openspaces.core.GigaSpace;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
-
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-public class RunningPuImpl implements RunningPu {
-
-    private final PuRunner runner;
-    private volatile State state;
-
-    enum State {
-        NEW {
-            @Override
-            State start(PuRunner runner) throws Exception {
-                runner.run();
-                return RUNNING;
-            }
-
-            @Override
-            State stop(PuRunner runner) {
-                return CLOSED;
-            }
-        },
-        RUNNING {
-            @Override
-            State start(PuRunner runner) {
-                throw new IllegalStateException("Pu already running!");
-            }
-
-            @Override
-            State stop(PuRunner runner) throws Exception {
-                runner.shutdown();
-                return CLOSED;
-            }
-        },
-        CLOSED {
-            @Override
-            State start(PuRunner runner) throws Exception {
-                runner.run();
-                return RUNNING;
-            }
-
-            @Override
-            State stop(PuRunner runner) {
-                return CLOSED;
-            }
-        };
-
-        abstract State start(PuRunner runner) throws Exception;
-
-        abstract State stop(PuRunner runner) throws Exception;
-    }
+/**
+ * @deprecated use {@link com.avanza.gs.test.junit4.RunningPuImpl} for JUnit 4
+ */
+@Deprecated
+public class RunningPuImpl extends com.avanza.gs.test.junit4.RunningPuImpl implements RunningPu {
 
     public RunningPuImpl(PuRunner runner) {
-        this.runner = runner;
-        this.state = State.NEW;
+        super(runner);
     }
 
-    @Override
-    public Statement apply(final Statement base, Description description) {
-        return new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                try {
-                    if (runner.autostart()) {
-                        start();
-                    }
-                    base.evaluate();
-                } finally {
-                    try {
-                        stop();
-                    } catch (Exception e) {
-                        // Ignore
-                    }
-                }
-            }
-
-        };
-    }
-
-    @Override
-    public void close() throws Exception {
-        stop();
-    }
-
-    @Override
-    public synchronized void start() throws Exception {
-        System.setProperty("com.gs.jini_lus.groups", runner.getLookupGroupName());
-        this.state = this.state.start(this.runner);
-    }
-
-    @Override
-    public synchronized void stop() throws Exception {
-        this.state = this.state.stop(this.runner);
-    }
-
-    @Override
-    public String getLookupGroupName() {
-        return this.runner.getLookupGroupName();
-    }
-
-    @Override
-    public GigaSpace getClusteredGigaSpace() {
-        return this.runner.getClusteredGigaSpace();
-    }
-
-    @Override
-    public BeanFactory getPrimaryInstanceApplicationContext(int partition) {
-        return this.runner.getPrimaryInstanceApplicationContext(partition);
-    }
-
-    @Override
-    public Collection<ListableBeanFactory> getApplicationContexts() {
-        return IntStream.range(0, runner.getNumInstances())
-                .mapToObj(partition -> runner.getPrimaryInstanceApplicationContext(partition))
-                .collect(Collectors.toList());
-    }
 }

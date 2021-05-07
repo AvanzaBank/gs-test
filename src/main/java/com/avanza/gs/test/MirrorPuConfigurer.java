@@ -15,36 +15,16 @@
  */
 package com.avanza.gs.test;
 
-import java.util.Properties;
-
-import org.springframework.context.ApplicationContext;
-
-public class MirrorPuConfigurer {
+/**
+ * @deprecated use {@link com.avanza.gs.test.junit4.MirrorPuConfigurer} for JUnit 4
+ */
+@Deprecated
+public class MirrorPuConfigurer extends CommonMirrorPuConfigurer<MirrorPuConfigurer> {
 	
-	final String puXmlPath;
-	Properties properties = new Properties();
-	ApplicationContext parentContext;
-	String lookupGroupName = JVMGlobalLus.getLookupGroupName();
-
 	public MirrorPuConfigurer(String puXmlPath) {
-		this.puXmlPath = puXmlPath;
+		super(puXmlPath);
 	}
 
-	public MirrorPuConfigurer contextProperty(String propertyName, String propertyValue) {
-		this.properties.setProperty(propertyName, propertyValue);
-		return this;
-	}
-
-	public MirrorPuConfigurer parentContext(ApplicationContext parentContext) {
-		this.parentContext = parentContext;
-		return this;
-	}
-		
-	public MirrorPuConfigurer lookupGroup(String group) {
-		this.lookupGroupName = group;
-		return this;
-	}
-	
 	public RunningPu configure() {
 		return new RunningPuImpl(new MirrorPu(this));
 	}

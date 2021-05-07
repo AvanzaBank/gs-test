@@ -15,67 +15,14 @@
  */
 package com.avanza.gs.test;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import org.springframework.context.ApplicationContext;
-
-public final class PartitionedPuConfigurer {
-	
-	String puXmlPath;
-	int numberOfPrimaries = 1;
-	int numberOfBackups = 0;
-	boolean startAsync = false;
-	Properties contextProperties = new Properties();
-	Map<String, Properties> beanProperies = new HashMap<>();
-	String lookupGroupName = JVMGlobalLus.getLookupGroupName();
-	String spaceName = "test-space";
-	public boolean autostart = true;
-	ApplicationContext parentContext;
-	boolean useAuthentication;
+/**
+ * @deprecated use {@link com.avanza.gs.test.junit4.PartitionedPuConfigurer} for JUnit 4
+ */
+@Deprecated
+public final class PartitionedPuConfigurer extends CommonPartitionedPuConfigurer<PartitionedPuConfigurer> {
 
 	public PartitionedPuConfigurer(String puXmlPath) {
-		this.puXmlPath = puXmlPath;
-	}
-	
-	public PartitionedPuConfigurer parentContext(ApplicationContext parentContext) {
-		this.parentContext = parentContext;
-		return this;
-	}
-
-	public PartitionedPuConfigurer numberOfPrimaries(int numberOfPrimaries) {
-		this.numberOfPrimaries = numberOfPrimaries;
-		return this;
-	}
-
-	public PartitionedPuConfigurer numberOfBackups(int numberOfBackups) {
-		this.numberOfBackups = numberOfBackups;
-		return this;
-	}
-
-	public PartitionedPuConfigurer beanProperties(String beanName, Properties beanProperties) {
-		this.beanProperies.put(beanName, beanProperties);
-		return this;
-	}
-
-	public PartitionedPuConfigurer startAsync(boolean startAsync) {
-		this.startAsync  = startAsync;
-		return this;
-	}
-
-	public PartitionedPuConfigurer lookupGroup(String group) {
-		this.lookupGroupName = group;
-		return this;
-	}
-
-	/**
-	 * @deprecated For backwards compatibility only. Use {@link #lookupGroup(String)} instead
-	 */
-	@Deprecated
-	public PartitionedPuConfigurer groupName(String group) {
-		this.lookupGroupName = group;
-		return this;
+		super(puXmlPath);
 	}
 
 	public RunningPu configure() {
@@ -85,33 +32,4 @@ public final class PartitionedPuConfigurer {
 		return new RunningPuImpl(new PartitionedPu(this));
 	}
 
-	public PartitionedPuConfigurer contextProperties(Properties properties) {
-		this.contextProperties = properties;
-		return this;
-	}
-	
-	public PartitionedPuConfigurer contextProperties(ContextProperties properties) {
-		this.contextProperties = properties.getProperties();
-		return this;
-	}
-
-	public PartitionedPuConfigurer contextProperty(String name, String value) {
-		this.contextProperties.setProperty(name, value);
-		return this;
-	}
-
-	public PartitionedPuConfigurer autostart(boolean autostart) {
-		this.autostart = autostart;
-		return this;
-	}
-
-	public PartitionedPuConfigurer spaceName(String spaceName) {
-		this.spaceName = spaceName;
-		return this;
-	}
-
-	public PartitionedPuConfigurer withAuthentication() {
-		this.useAuthentication = true;
-		return this;
-	}
 }

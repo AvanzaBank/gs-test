@@ -29,12 +29,12 @@ public class MirrorPu implements PuRunner {
 	private IntegratedProcessingUnitContainer container;
 	private final String gigaSpaceBeanName = "gigaSpace";
 	private final String puXmlPath;
-	private Properties contextProperties = new Properties();
+	private Properties contextProperties;
 	private final String lookupGroupName;
 	private final boolean autostart;
 	private final ApplicationContext parentContext;
 	
-	public MirrorPu(MirrorPuConfigurer config) {
+	public MirrorPu(CommonMirrorPuConfigurer<?> config) {
 		this.puXmlPath = config.puXmlPath;
 		this.contextProperties = config.properties;
 		this.lookupGroupName = config.lookupGroupName;
@@ -86,7 +86,7 @@ public class MirrorPu implements PuRunner {
 	
 	@Override
 	public GigaSpace getClusteredGigaSpace() {
-		return GigaSpace.class.cast(container.getApplicationContext().getBean(this.gigaSpaceBeanName)).getClustered();
+		return container.getApplicationContext().getBean(this.gigaSpaceBeanName, GigaSpace.class).getClustered();
 	}
 	
 	@Override

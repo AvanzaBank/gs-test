@@ -15,58 +15,17 @@
  */
 package com.avanza.gs.test;
 
-import java.util.UUID;
-
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-import org.openspaces.core.GigaSpace;
-import org.openspaces.core.GigaSpaceConfigurer;
-import org.openspaces.core.space.UrlSpaceConfigurer;
-
-public class EmbeddedSpace implements TestRule {
-
-	private final UrlSpaceConfigurer urlSpaceConfigurer;
-	private final GigaSpace gigaSpace;
+/**
+ * @deprecated use {@link com.avanza.gs.test.junit4.EmbeddedSpace} for JUnit 4
+ */
+@Deprecated
+public class EmbeddedSpace extends com.avanza.gs.test.junit4.EmbeddedSpace {
 
 	public EmbeddedSpace() {
-		this("space-" + UUID.randomUUID().toString());
 	}
 	
 	public EmbeddedSpace(String spaceName) {
-		this.urlSpaceConfigurer = new UrlSpaceConfigurer("/./" + spaceName).lookupGroups(JVMGlobalLus.getLookupGroupName());
-		this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer.space()).gigaSpace();
-	}
-	
-	public GigaSpace getGigaSpace() {
-		return gigaSpace;
-	}
-	
-	public void start() {		
-	}
-	
-	public void destroy() {
-		urlSpaceConfigurer.close();
-	}
-
-	@Override
-	public Statement apply(final Statement base, Description description) {
-		return new Statement() {
-			@Override
-			public void evaluate() throws Throwable {
-				try {
-					start();
-					base.evaluate();
-				} finally {
-					try {
-						destroy();
-					} catch (Exception e) {
-						// Ignore
-					}
-				}
-			}
-
-		};
+		super(spaceName);
 	}
 
 }

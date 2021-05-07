@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.avanza.gs.test;
+package com.avanza.gs.test.junit4;
 
-/**
- * @deprecated Use {@link com.avanza.gs.test.junit4.PuConfigurers} for JUnit 4
- */
-@Deprecated
-public class PuConfigurers {
 
-	public static PartitionedPuConfigurer partitionedPu(String puXmlPath) {
-		return new PartitionedPuConfigurer(puXmlPath);
+import com.avanza.gs.test.AsyncPuRunner;
+import com.avanza.gs.test.CommonPartitionedPuConfigurer;
+import com.avanza.gs.test.PartitionedPu;
+
+public final class PartitionedPuConfigurer extends CommonPartitionedPuConfigurer<PartitionedPuConfigurer> {
+
+	public PartitionedPuConfigurer(String puXmlPath) {
+		super(puXmlPath);
 	}
 
-	public static MirrorPuConfigurer mirrorPu(String puXmlPath) {
-		return new MirrorPuConfigurer(puXmlPath);
+	public RunningPu configure() {
+		if (startAsync) {
+			return new RunningPuImpl(new AsyncPuRunner(new PartitionedPu(this)));
+		}
+		return new RunningPuImpl(new PartitionedPu(this));
 	}
 
 }
