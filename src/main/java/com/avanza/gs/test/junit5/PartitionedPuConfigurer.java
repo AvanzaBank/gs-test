@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.avanza.gs.test.junit4;
-
+package com.avanza.gs.test.junit5;
 
 import com.avanza.gs.test.AsyncPuRunner;
 import com.avanza.gs.test.CommonPartitionedPuConfigurer;
@@ -22,15 +21,16 @@ import com.avanza.gs.test.PartitionedPu;
 
 public final class PartitionedPuConfigurer extends CommonPartitionedPuConfigurer<PartitionedPuConfigurer> {
 
-	public PartitionedPuConfigurer(String puXmlPath) {
-		super(puXmlPath);
-	}
+    public PartitionedPuConfigurer(String puXmlPath) {
+        super(puXmlPath);
+    }
 
-	public RunningPu configure() {
-		if (isStartAsync()) {
-			return new RunningPuImpl(new AsyncPuRunner(new PartitionedPu(this)));
-		}
-		return new RunningPuImpl(new PartitionedPu(this));
-	}
+    public RunningPu configure() {
+        if (isStartAsync()) {
+            return new RunningPuImpl(new AsyncPuRunner(new PartitionedPu(this)));
+        } else {
+            return new RunningPuImpl(new PartitionedPu(this));
+        }
+    }
 
 }

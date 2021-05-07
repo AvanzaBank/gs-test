@@ -26,7 +26,7 @@ public final class PartitionedPuConfigurer extends CommonPartitionedPuConfigurer
 	}
 
 	public RunningPu configure() {
-		if (startAsync) {
+		if (isStartAsync()) {
 			return new RunningPuImpl(new AsyncPuRunner(new PartitionedPu(this)));
 		}
 		return new RunningPuImpl(new PartitionedPu(this));

@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.avanza.gs.test.junit4;
+package com.avanza.gs.test.junit5;
 
 import com.avanza.gs.test.CommonRunningPuImpl;
 import com.avanza.gs.test.PuRunner;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 
 public class RunningPuImpl extends CommonRunningPuImpl implements RunningPu {
 
@@ -27,25 +25,19 @@ public class RunningPuImpl extends CommonRunningPuImpl implements RunningPu {
     }
 
     @Override
-    public Statement apply(final Statement base, Description description) {
-        return new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                try {
-                    if (isAutostart()) {
-                        start();
-                    }
-                    base.evaluate();
-                } finally {
-                    try {
-                        stop();
-                    } catch (Exception e) {
-                        // Ignore
-                    }
-                }
-            }
+    public void before() throws Exception {
+        if (isAutostart()) {
+            start();
+        }
+    }
 
-        };
+    @Override
+    public void after() {
+        try {
+            stop();
+        } catch (Exception ignore) {
+
+        }
     }
 
 }

@@ -15,27 +15,9 @@
  */
 package com.avanza.gs.test.junit4;
 
+import com.avanza.gs.test.CommonRunningPu;
 import org.junit.rules.TestRule;
-import org.openspaces.core.GigaSpace;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
 
-import java.util.Collection;
-
-public interface RunningPu extends TestRule, AutoCloseable  {
-	
-	// TODO: Rename to ManagedPu
-
-	String getLookupGroupName();
-
-	GigaSpace getClusteredGigaSpace();
-
-	void start() throws Exception;
-	
-	void stop() throws Exception;
-
-	BeanFactory getPrimaryInstanceApplicationContext(int partition);
-
-	Collection<ListableBeanFactory> getApplicationContexts();
+public interface RunningPu extends CommonRunningPu, TestRule {
 
 }

@@ -13,24 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.avanza.gs.test.junit4;
+package com.avanza.gs.test;
 
+import org.openspaces.core.GigaSpace;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.ListableBeanFactory;
 
-import com.avanza.gs.test.AsyncPuRunner;
-import com.avanza.gs.test.CommonPartitionedPuConfigurer;
-import com.avanza.gs.test.PartitionedPu;
+import java.util.Collection;
 
-public final class PartitionedPuConfigurer extends CommonPartitionedPuConfigurer<PartitionedPuConfigurer> {
+public interface CommonRunningPu extends AutoCloseable  {
+	
+	// TODO: Rename to ManagedPu
 
-	public PartitionedPuConfigurer(String puXmlPath) {
-		super(puXmlPath);
-	}
+	String getLookupGroupName();
 
-	public RunningPu configure() {
-		if (isStartAsync()) {
-			return new RunningPuImpl(new AsyncPuRunner(new PartitionedPu(this)));
-		}
-		return new RunningPuImpl(new PartitionedPu(this));
-	}
+	GigaSpace getClusteredGigaSpace();
+
+	void start() throws Exception;
+	
+	void stop() throws Exception;
+
+	BeanFactory getPrimaryInstanceApplicationContext(int partition);
+
+	Collection<ListableBeanFactory> getApplicationContexts();
 
 }

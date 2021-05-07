@@ -21,10 +21,10 @@ import java.util.Properties;
 
 public abstract class CommonMirrorPuConfigurer<T extends CommonMirrorPuConfigurer<T>> {
 
-    protected final String puXmlPath;
-    protected Properties properties = new Properties();
-    protected ApplicationContext parentContext;
-    protected String lookupGroupName = JVMGlobalLus.getLookupGroupName();
+    final String puXmlPath;
+    Properties properties = new Properties();
+    ApplicationContext parentContext;
+    String lookupGroupName = JVMGlobalLus.getLookupGroupName();
 
     protected CommonMirrorPuConfigurer(String puXmlPath) {
         this.puXmlPath = puXmlPath;

@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.avanza.gs.test;
+package com.avanza.gs.test.junit5;
 
-import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeJars;
-import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests;
+import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 
+import static com.tngtech.archunit.base.DescribedPredicate.not;
+import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
-@AnalyzeClasses(packages = "com.avanza.gs.test", importOptions = {DoNotIncludeTests.class, DoNotIncludeJars.class})
-class CommonPackageJunitArchitectureTest {
+@AnalyzeClasses(packages = "com.avanza.gs.test", importOptions = {ImportOption.DoNotIncludeTests.class, ImportOption.DoNotIncludeJars.class})
+public class Junit5PackageArchitectureTest {
 
     @ArchTest
-    static final ArchRule classesInCommonPackageShouldNotDependOnJUnit =
+    static final ArchRule classesInJunit5PackageShouldNotDependOnJunit4 =
             noClasses()
-                    .that()
-                    .resideInAPackage("com.avanza.gs.test")
-                    .should()
-                    .dependOnClassesThat()
-                    .resideInAPackage("org.junit.*");
+                    .that().resideInAPackage("com.avanza.gs.test.junit5")
+                    .should().dependOnClassesThat(resideInAPackage("org.junit.*").and(not(resideInAPackage("org.junit.jupiter"))))
+                    .orShould()
+                    .dependOnClassesThat().resideInAPackage("com.avanza.gs.test.junit4");
+
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.avanza.gs.test.junit4;
+package com.avanza.gs.test.junit5;
 
 import com.avanza.gs.test.PartitionedPu;
 

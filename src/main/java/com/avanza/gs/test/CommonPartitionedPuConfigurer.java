@@ -22,18 +22,18 @@ import java.util.Map;
 import java.util.Properties;
 
 public abstract class CommonPartitionedPuConfigurer<T extends CommonPartitionedPuConfigurer<T>> {
-	
-	protected final String puXmlPath;
-	protected int numberOfPrimaries = 1;
-	protected int numberOfBackups = 0;
-	protected boolean startAsync = false;
-	protected Properties contextProperties = new Properties();
-	protected Map<String, Properties> beanProperties = new HashMap<>();
-	protected String lookupGroupName = JVMGlobalLus.getLookupGroupName();
-	protected String spaceName = "test-space";
+
+	final String puXmlPath;
+	int numberOfPrimaries = 1;
+	int numberOfBackups = 0;
+	boolean startAsync = false;
+	Properties contextProperties = new Properties();
+	Map<String, Properties> beanProperties = new HashMap<>();
+	String lookupGroupName = JVMGlobalLus.getLookupGroupName();
+	String spaceName = "test-space";
 	public boolean autostart = true;
-	protected ApplicationContext parentContext;
-	protected boolean useAuthentication;
+	ApplicationContext parentContext;
+	boolean useAuthentication;
 
 	protected CommonPartitionedPuConfigurer(String puXmlPath) {
 		this.puXmlPath = puXmlPath;
@@ -107,7 +107,11 @@ public abstract class CommonPartitionedPuConfigurer<T extends CommonPartitionedP
 		this.useAuthentication = true;
 		return me();
 	}
-	
+
+	protected boolean isStartAsync() {
+		return startAsync;
+	}
+
 	@SuppressWarnings("unchecked")
 	private T me() {
 		return (T) this;

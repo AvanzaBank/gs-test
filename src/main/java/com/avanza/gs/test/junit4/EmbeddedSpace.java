@@ -15,59 +15,38 @@
  */
 package com.avanza.gs.test.junit4;
 
-import com.avanza.gs.test.JVMGlobalLus;
+import com.avanza.gs.test.CommonEmbeddedSpace;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
-import org.openspaces.core.GigaSpace;
-import org.openspaces.core.GigaSpaceConfigurer;
-import org.openspaces.core.space.UrlSpaceConfigurer;
 
-import java.util.UUID;
+public class EmbeddedSpace extends CommonEmbeddedSpace implements TestRule {
 
-public class EmbeddedSpace implements TestRule {
+    public EmbeddedSpace() {
+    }
 
-	private final UrlSpaceConfigurer urlSpaceConfigurer;
-	private final GigaSpace gigaSpace;
+    public EmbeddedSpace(String spaceName) {
+        super(spaceName);
+    }
 
-	public EmbeddedSpace() {
-		this("space-" + UUID.randomUUID());
-	}
-	
-	public EmbeddedSpace(String spaceName) {
-		this.urlSpaceConfigurer = new UrlSpaceConfigurer("/./" + spaceName).lookupGroups(JVMGlobalLus.getLookupGroupName());
-		this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer.space()).gigaSpace();
-	}
-	
-	public GigaSpace getGigaSpace() {
-		return gigaSpace;
-	}
-	
-	public void start() {		
-	}
-	
-	public void destroy() {
-		urlSpaceConfigurer.close();
-	}
+    @Override
+    public Statement apply(final Statement base, Description description) {
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                try {
+                    start();
+                    base.evaluate();
+                } finally {
+                    try {
+                        destroy();
+                    } catch (Exception e) {
+                        // Ignore
+                    }
+                }
+            }
 
-	@Override
-	public Statement apply(final Statement base, Description description) {
-		return new Statement() {
-			@Override
-			public void evaluate() throws Throwable {
-				try {
-					start();
-					base.evaluate();
-				} finally {
-					try {
-						destroy();
-					} catch (Exception e) {
-						// Ignore
-					}
-				}
-			}
-
-		};
-	}
+        };
+    }
 
 }

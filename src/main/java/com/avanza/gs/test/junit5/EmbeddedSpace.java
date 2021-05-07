@@ -13,24 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.avanza.gs.test.junit4;
+package com.avanza.gs.test.junit5;
 
+import com.avanza.gs.test.CommonEmbeddedSpace;
 
-import com.avanza.gs.test.AsyncPuRunner;
-import com.avanza.gs.test.CommonPartitionedPuConfigurer;
-import com.avanza.gs.test.PartitionedPu;
+public class EmbeddedSpace extends CommonEmbeddedSpace implements ResourceExtension {
 
-public final class PartitionedPuConfigurer extends CommonPartitionedPuConfigurer<PartitionedPuConfigurer> {
+    public EmbeddedSpace() {
+    }
 
-	public PartitionedPuConfigurer(String puXmlPath) {
-		super(puXmlPath);
-	}
+    public EmbeddedSpace(String spaceName) {
+        super(spaceName);
+    }
 
-	public RunningPu configure() {
-		if (isStartAsync()) {
-			return new RunningPuImpl(new AsyncPuRunner(new PartitionedPu(this)));
-		}
-		return new RunningPuImpl(new PartitionedPu(this));
-	}
+    @Override
+    public void before() {
+        start();
+    }
 
+    @Override
+    public void after() {
+        try {
+            destroy();
+        } catch (Exception ignore) {
+        }
+    }
 }
