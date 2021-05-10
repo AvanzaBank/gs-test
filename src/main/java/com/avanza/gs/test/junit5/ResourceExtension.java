@@ -15,120 +15,39 @@
  */
 package com.avanza.gs.test.junit5;
 
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
-import org.junit.jupiter.api.function.ThrowingConsumer;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.List;
+interface ResourceExtension extends ChainableBeforeCallbacks {
 
-import static com.avanza.gs.test.junit5.ResourceExtension.Scope.ALL;
-import static com.avanza.gs.test.junit5.ResourceExtension.Scope.EACH;
+	void before() throws Exception;
 
-interface ResourceExtension extends BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback {
+	void after() throws Exception;
 
-    void before() throws Exception;
+	@Override
+	default void beforeAll(ExtensionContext context) throws Exception {
+		ensureInitialized(context);
+	}
 
-    void after() throws Exception;
+	@Override
+	default void beforeEach(ExtensionContext context) throws Exception {
+		if (context.getParent().map(this::getStore).map(store -> store.get(this)).isEmpty()) {
+			ensureInitialized(context);
+		}
+	}
 
-    default ResourceExtension andThen(ResourceExtension other) {
-        return new Order(this).andThen(other);
-    }
+	private Store getStore(ExtensionContext context) {
+		return context.getStore(Namespace.create(this, context.getRequiredTestClass()));
+	}
 
-    @Override
-    default void beforeAll(ExtensionContext context) throws Exception {
-        if (getOrSet(context, ALL) == ALL) {
-            before();
-        }
-    }
-
-    @Override
-    default void beforeEach(ExtensionContext context) throws Exception {
-        if (getOrSet(context, EACH) == EACH) {
-            before();
-        }
-    }
-
-    @Override
-    default void afterEach(ExtensionContext context) throws Exception {
-        if (getNullable(context) == EACH) {
-            after();
-        }
-    }
-
-    @Override
-    default void afterAll(ExtensionContext context) throws Exception {
-        if (getNullable(context) == ALL) {
-            after();
-        }
-    }
-
-    enum Scope {
-        ALL, EACH
-    }
-
-    private Scope getOrSet(ExtensionContext context, Scope scope) {
-        return getStore(context).getOrComputeIfAbsent(Scope.class, key -> scope, Scope.class);
-    }
-
-    private Scope getNullable(ExtensionContext context) {
-        return getStore(context).get(Scope.class, Scope.class);
-    }
-
-    private Store getStore(ExtensionContext context) {
-        return context.getRoot().getStore(Namespace.create(getClass(), context.getRequiredTestClass()));
-    }
-
-    final class Order implements ResourceExtension {
-
-        private final Deque<ResourceExtension> order;
-
-        private Order(Deque<ResourceExtension> order) {
-            this.order = order;
-        }
-
-        Order(ResourceExtension first) {
-            this(new ArrayDeque<>(List.of(first)));
-        }
-
-        @Override
-        public void before() throws Exception {
-            forEach(order.iterator(), ResourceExtension::before);
-        }
-
-        @Override
-        public void after() throws Exception {
-            forEach(order.descendingIterator(), ResourceExtension::after);
-        }
-
-        @Override
-        public ResourceExtension andThen(ResourceExtension other) {
-            Deque<ResourceExtension> newOrder = new ArrayDeque<>(order);
-            if (other instanceof Order) {
-                newOrder.addAll(((Order) other).order);
-            } else {
-                newOrder.add(other);
-            }
-            return new Order(newOrder);
-        }
-
-        private void forEach(Iterator<ResourceExtension> iterator, ExceptionThrowingConsumer<ResourceExtension> action) throws Exception {
-            while (iterator.hasNext()) {
-                action.accept(iterator.next());
-            }
-        }
-
-        @FunctionalInterface
-        private interface ExceptionThrowingConsumer<T> extends ThrowingConsumer<T> {
-
-            @Override
-            void accept(T t) throws Exception;
-
-        }
-
-    }
+	private void ensureInitialized(ExtensionContext context) throws Exception {
+		Store store = getStore(context);
+		if (store.get(this) == null) {
+			// cannot use computeIfAbsent because before declares checked exception
+			before();
+			store.put(this, (Store.CloseableResource) this::after);
+		}
+	}
 
 }
