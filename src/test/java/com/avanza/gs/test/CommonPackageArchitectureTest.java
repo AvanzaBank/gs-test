@@ -32,4 +32,11 @@ class CommonPackageArchitectureTest {
                     .that().resideInAPackage("com.avanza.gs.test")
                     .should()
                     .dependOnClassesThat().resideInAPackage("org.junit.*");
+
+    @ArchTest
+    static final ArchRule classesInCommonPackageShouldNotDependOnJUnitSpecificPackagesUnlessDeprecated =
+            noClasses()
+                    .that().resideInAPackage("com.avanza.gs.test").and().areNotAnnotatedWith(Deprecated.class)
+                    .should()
+                    .dependOnClassesThat().resideInAnyPackage("com.avanza.gs.test.junit4", "com.avanza.gs.test.junit5");
 }
