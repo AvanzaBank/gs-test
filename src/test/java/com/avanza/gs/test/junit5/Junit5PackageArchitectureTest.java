@@ -25,7 +25,7 @@ import static com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPac
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 @AnalyzeClasses(packages = "com.avanza.gs.test", importOptions = {ImportOption.DoNotIncludeTests.class, ImportOption.DoNotIncludeJars.class})
-public class Junit5PackageArchitectureTest {
+class Junit5PackageArchitectureTest {
 
     @ArchTest
     static final ArchRule classesInJunit5PackageShouldNotDependOnJunit4 =

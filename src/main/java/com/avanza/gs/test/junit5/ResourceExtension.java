@@ -18,8 +18,11 @@ package com.avanza.gs.test.junit5;
 import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
+import org.junit.jupiter.api.function.ThrowingConsumer;
 
-import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.avanza.gs.test.junit5.ResourceExtension.Scope.ALL;
@@ -81,33 +84,29 @@ interface ResourceExtension extends BeforeAllCallback, BeforeEachCallback, After
 
     final class Order implements ResourceExtension {
 
-        private final List<ResourceExtension> order;
+        private final Deque<ResourceExtension> order;
 
-        public Order(List<ResourceExtension> order) {
+        private Order(Deque<ResourceExtension> order) {
             this.order = order;
         }
 
         Order(ResourceExtension first) {
-            this(List.of(first));
+            this(new ArrayDeque<>(List.of(first)));
         }
 
         @Override
         public void before() throws Exception {
-            for (ResourceExtension resourceExtension : order) {
-                resourceExtension.before();
-            }
+            forEach(order.iterator(), ResourceExtension::before);
         }
 
         @Override
         public void after() throws Exception {
-            for (ResourceExtension resourceExtension : order) {
-                resourceExtension.after();
-            }
+            forEach(order.descendingIterator(), ResourceExtension::after);
         }
 
         @Override
         public ResourceExtension andThen(ResourceExtension other) {
-            List<ResourceExtension> newOrder = new ArrayList<>(order);
+            Deque<ResourceExtension> newOrder = new ArrayDeque<>(order);
             if (other instanceof Order) {
                 newOrder.addAll(((Order) other).order);
             } else {
@@ -115,5 +114,21 @@ interface ResourceExtension extends BeforeAllCallback, BeforeEachCallback, After
             }
             return new Order(newOrder);
         }
+
+        private void forEach(Iterator<ResourceExtension> iterator, ExceptionThrowingConsumer<ResourceExtension> action) throws Exception {
+            while (iterator.hasNext()) {
+                action.accept(iterator.next());
+            }
+        }
+
+        @FunctionalInterface
+        private interface ExceptionThrowingConsumer<T> extends ThrowingConsumer<T> {
+
+            @Override
+            void accept(T t) throws Exception;
+
+        }
+
     }
+
 }
