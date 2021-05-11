@@ -15,18 +15,18 @@
  */
 package com.avanza.gs.test.junit5;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.spy;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.platform.testkit.engine.EngineExecutionResults;
 import org.junit.platform.testkit.engine.EngineTestKit;
 import org.mockito.InOrder;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.spy;
 
 class ResourceExtensionTest {
     // the individual resources are all static, so they can be used in TestClass
@@ -64,7 +64,7 @@ class ResourceExtensionTest {
                                                       .execute();
 
         // there are two tests, they should both succeed
-        assertThat(results.testEvents().succeeded().list(), hasSize(2));
+        assertThat(results.testEvents().succeeded().count(), equalTo(2L));
 
         // BeforeAll
         order.verify(staticResource1).before();
