@@ -21,7 +21,11 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.spy;
 
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.platform.testkit.engine.EngineExecutionResults;
@@ -34,7 +38,10 @@ class ResourceExtensionTest {
     private static final ResourceExtension staticResource2 = spy(new TestResourceExtension());
     private static final ResourceExtension instanceResource1 = spy(new TestResourceExtension());
     private static final ResourceExtension instanceResource2 = spy(new TestResourceExtension());
+    private static final ResourceExtension instanceResource3 = spy(new TestResourceExtension());
+    private static final ResourceExtension instanceResource4 = spy(new TestResourceExtension());
 
+    @TestMethodOrder(OrderAnnotation.class)
     static class TestClass {
 
         @RegisterExtension
@@ -44,27 +51,42 @@ class ResourceExtensionTest {
         Extension instanceResources = instanceResource1.andThen(instanceResource2);
 
         @Test
+        @Order(1)
         void firstTest() {
             // intentionally empty
         }
 
         @Test
+        @Order(2)
         void secondTest() {
             // intentionally empty
+        }
+
+        @Nested
+        class InnerTestClass {
+
+            @RegisterExtension
+            Extension instanceResources = instanceResource3.andThen(instanceResource4);
+
+            @Test
+            @Order(3)
+            void innerTest() {
+                // intentionally empty
+            }
         }
 
     }
 
     @Test
     void shouldCallBeforeAndAfterInTheCorrectOrder() throws Exception {
-        InOrder order = inOrder(staticResource1, staticResource2, instanceResource1, instanceResource2);
+        InOrder order = inOrder(staticResource1, staticResource2, instanceResource1, instanceResource2, instanceResource3, instanceResource4);
 
         EngineExecutionResults results = EngineTestKit.engine("junit-jupiter")
                                                       .selectors(selectClass(TestClass.class))
                                                       .execute();
 
         // there are two tests, they should both succeed
-        assertThat(results.testEvents().succeeded().count(), equalTo(2L));
+        assertThat(results.testEvents().succeeded().count(), equalTo(3L));
 
         // BeforeAll
         order.verify(staticResource1).before();
@@ -85,6 +107,14 @@ class ResourceExtensionTest {
         // AfterEach - second test
         order.verify(instanceResource2).after();
         order.verify(instanceResource1).after();
+
+        // BeforeEach - nested third test
+        order.verify(instanceResource3).before();
+        order.verify(instanceResource4).before();
+
+        // AfterEach - nested third test
+        order.verify(instanceResource4).after();
+        order.verify(instanceResource3).after();
 
         // AfterAll
         order.verify(staticResource2).after();
