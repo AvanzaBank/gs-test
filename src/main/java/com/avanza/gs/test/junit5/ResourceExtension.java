@@ -15,11 +15,13 @@
  */
 package com.avanza.gs.test.junit5;
 
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
 
-interface ResourceExtension extends ChainableBeforeCallbacks {
+interface ResourceExtension extends BeforeAllCallback, BeforeEachCallback {
 
 	void before() throws Exception;
 

@@ -44,11 +44,21 @@ class ResourceExtensionTest {
     @TestMethodOrder(OrderAnnotation.class)
     static class TestClass {
 
+        @Order(1)
         @RegisterExtension
-        static Extension staticResources = staticResource1.andThen(staticResource2);
+        static Extension staticExtension1 = staticResource1;
 
+        @Order(2)
         @RegisterExtension
-        Extension instanceResources = instanceResource1.andThen(instanceResource2);
+        static Extension staticExtension2 = staticResource2;
+
+        @Order(1)
+        @RegisterExtension
+        Extension instanceExtension1 = instanceResource1;
+
+        @Order(2)
+        @RegisterExtension
+        Extension instanceExtension2 = instanceResource2;
 
         @Test
         @Order(1)
@@ -65,8 +75,13 @@ class ResourceExtensionTest {
         @Nested
         class InnerTestClass {
 
+            @Order(1)
             @RegisterExtension
-            Extension instanceResources = instanceResource3.andThen(instanceResource4);
+            Extension innerInstanceExtension1 = instanceResource3;
+
+            @Order(2)
+            @RegisterExtension
+            Extension innerInstanceExtension2 = instanceResource4;
 
             @Test
             @Order(3)
