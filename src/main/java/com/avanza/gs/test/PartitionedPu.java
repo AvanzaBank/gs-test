@@ -15,7 +15,11 @@
  */
 package com.avanza.gs.test;
 
-import com.gigaspaces.security.directory.DefaultCredentialsProvider;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.cluster.ClusterInfo;
 import org.openspaces.core.properties.BeanLevelProperties;
@@ -24,10 +28,7 @@ import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainerP
 import org.openspaces.pu.container.support.CompoundProcessingUnitContainer;
 import org.springframework.context.ApplicationContext;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import com.gigaspaces.security.directory.DefaultCredentialsProvider;
 
 /**
  * 
@@ -136,7 +137,7 @@ public final class PartitionedPu implements PuRunner {
 	
 	@Override
 	public GigaSpace getClusteredGigaSpace() {
-		return getPrimaryInstanceApplicationContext(0).getBean(GigaSpace.class, this.gigaSpaceBeanName).getClustered();
+		return getPrimaryInstanceApplicationContext(0).getBean(this.gigaSpaceBeanName, GigaSpace.class).getClustered();
 	}
 
 	@Override
