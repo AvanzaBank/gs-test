@@ -21,6 +21,13 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
 
+/**
+ * This interface makes sure that {@link #before} and {@link #after} are called
+ * at most once, regardless of whether the implementing class is used in tests
+ * as a {@code static} instance (which would normally use the callbacks from
+ * {@link BeforeAllCallback}), or as a non-{@code static} instance (which would
+ * normally use {@link BeforeEachCallback}).
+ */
 interface ResourceExtension extends BeforeAllCallback, BeforeEachCallback {
 
 	void before() throws Exception;
