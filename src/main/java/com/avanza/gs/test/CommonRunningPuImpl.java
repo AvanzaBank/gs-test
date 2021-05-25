@@ -15,21 +15,21 @@
  */
 package com.avanza.gs.test;
 
-import org.openspaces.core.GigaSpace;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
+import static java.util.stream.Collectors.toList;
 
 import java.util.Collection;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.toList;
+import org.openspaces.core.GigaSpace;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.ListableBeanFactory;
 
 public abstract class CommonRunningPuImpl implements CommonRunningPu {
 
     private final PuRunner runner;
     private volatile State state;
 
-    enum State {
+    private enum State {
         NEW {
             @Override
             State start(PuRunner runner) throws Exception {
@@ -91,6 +91,7 @@ public abstract class CommonRunningPuImpl implements CommonRunningPu {
     @Override
     public synchronized void stop() throws Exception {
         this.state = this.state.stop(this.runner);
+        System.clearProperty("com.gs.jini_lus.groups");
     }
 
     @Override
