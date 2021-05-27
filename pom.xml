@@ -33,6 +33,13 @@
 		<url>git@github.com:AvanzaBank/gs-test.git</url>
 	</scm>
 
+	<repositories>
+		<repository>
+			<id>org.openspaces</id>
+			<url>http://maven-repository.openspaces.org</url>
+		</repository>
+	</repositories>
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
