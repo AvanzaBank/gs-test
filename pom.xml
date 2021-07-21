@@ -127,7 +127,7 @@
 		<license-maven-plugin.version>2.11</license-maven-plugin.version>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 
-		<archunit.version>0.18.0</archunit.version>
+		<archunit.version>0.20.1</archunit.version>
 		<spring.version>5.1.7.RELEASE</spring.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<gigaspaces.version>14.5.0</gigaspaces.version>

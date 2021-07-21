@@ -21,8 +21,7 @@ import java.util.Collection;
 import java.util.stream.IntStream;
 
 import org.openspaces.core.GigaSpace;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.context.ApplicationContext;
 
 public abstract class CommonRunningPuImpl implements CommonRunningPu {
 
@@ -105,14 +104,14 @@ public abstract class CommonRunningPuImpl implements CommonRunningPu {
     }
 
     @Override
-    public BeanFactory getPrimaryInstanceApplicationContext(int partition) {
+    public ApplicationContext getPrimaryInstanceApplicationContext(int partition) {
         return this.runner.getPrimaryInstanceApplicationContext(partition);
     }
 
     @Override
-    public Collection<ListableBeanFactory> getApplicationContexts() {
+    public Collection<ApplicationContext> getApplicationContexts() {
         return IntStream.range(0, runner.getNumInstances())
-                .mapToObj(partition -> runner.getPrimaryInstanceApplicationContext(partition))
+                .mapToObj(runner::getPrimaryInstanceApplicationContext)
                 .collect(toList());
     }
 

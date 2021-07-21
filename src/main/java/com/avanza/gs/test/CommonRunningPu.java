@@ -15,11 +15,10 @@
  */
 package com.avanza.gs.test;
 
-import org.openspaces.core.GigaSpace;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
-
 import java.util.Collection;
+
+import org.openspaces.core.GigaSpace;
+import org.springframework.context.ApplicationContext;
 
 public interface CommonRunningPu extends AutoCloseable  {
 	
@@ -33,8 +32,8 @@ public interface CommonRunningPu extends AutoCloseable  {
 	
 	void stop() throws Exception;
 
-	BeanFactory getPrimaryInstanceApplicationContext(int partition);
+	ApplicationContext getPrimaryInstanceApplicationContext(int partition);
 
-	Collection<ListableBeanFactory> getApplicationContexts();
+	Collection<ApplicationContext> getApplicationContexts();
 
 }
