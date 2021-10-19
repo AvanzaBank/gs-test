@@ -32,7 +32,13 @@
 		<developerConnection>scm:git:git@github.com:AvanzaBank/gs-test.git</developerConnection>
 		<url>git@github.com:AvanzaBank/gs-test.git</url>
 	</scm>
-
+	<repositories>
+		<repository>
+			<id>gigaspaces</id>
+			<name>GigaSpaces</name>
+			<url>https://gigaspaces-maven-repository-eu.s3.amazonaws.com/</url>
+		</repository>
+	</repositories>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
