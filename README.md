@@ -1,5 +1,5 @@
 # GS-Test
-[![][travis img]][travis]
+[![][build img]][build]
 [![][maven img]][maven]
 [![][license img]][license]
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/AvanzaBank/gs-test.svg)](https://isitmaintained.com/project/AvanzaBank/gs-test "Average time to resolve an issue")
@@ -62,8 +62,8 @@ GS-Test packed as a single jar file. Maven users can get GS-Test using the follo
 ## License
 The GS-Test library is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
 
-[travis]:https://travis-ci.org/AvanzaBank/gs-test
-[travis img]:https://api.travis-ci.org/AvanzaBank/gs-test.svg
+[build]:https://github.com/AvanzaBank/gs-test/actions/workflows/build.yml
+[build img]:https://github.com/AvanzaBank/gs-test/actions/workflows/build.yml/badge.svg
 
 [release]:https://github.com/avanzabank/gs-test/releases
 [release img]:https://img.shields.io/github/release/avanzabank/gs-test.svg

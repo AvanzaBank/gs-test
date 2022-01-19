@@ -15,6 +15,8 @@
  */
 package com.avanza.gs.test.junit4;
 
+import static com.avanza.gs.test.PuXmlEmulation.createPuXmlConf;
+
 
 public class PuConfigurers {
 
@@ -22,8 +24,15 @@ public class PuConfigurers {
 		return new PartitionedPuConfigurer(puXmlPath);
 	}
 
+	public static PartitionedPuConfigurer partitionedPu(Class<?> puConfig) {
+		return partitionedPu(createPuXmlConf(puConfig).toUri().toString());
+	}
+
 	public static MirrorPuConfigurer mirrorPu(String puXmlPath) {
 		return new MirrorPuConfigurer(puXmlPath);
 	}
 
+	public static MirrorPuConfigurer mirrorPu(Class<?> mirrorConfig) {
+		return mirrorPu(createPuXmlConf(mirrorConfig).toUri().toString());
+	}
 }

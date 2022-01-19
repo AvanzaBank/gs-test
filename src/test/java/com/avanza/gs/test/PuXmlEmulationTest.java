@@ -16,26 +16,28 @@
 package com.avanza.gs.test;
 
 import static com.avanza.gs.test.PuXmlEmulation.createPuXmlConf;
+import static java.nio.file.Files.readAllLines;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-/**
- * @deprecated Use {@link com.avanza.gs.test.junit4.PuConfigurers} for JUnit 4
- */
-@Deprecated
-public class PuConfigurers {
+import java.nio.file.Path;
+import java.util.List;
 
-	public static PartitionedPuConfigurer partitionedPu(String puXmlPath) {
-		return new PartitionedPuConfigurer(puXmlPath);
+import org.junit.Test;
+import org.springframework.context.annotation.Configuration;
+
+public class PuXmlEmulationTest {
+	@Test
+	public void shouldProduceSpringXmlConfigThatReferencesSingleClass() throws Exception {
+		// Act
+		Path xmlFile = createPuXmlConf(SpringConfig.class);
+
+		// Assert
+		List<String> lines = readAllLines(xmlFile);
+		assertThat(lines, hasItem("    <bean class=\"com.avanza.gs.test.PuXmlEmulationTest$SpringConfig\"/>"));
 	}
 
-	public static PartitionedPuConfigurer partitionedPu(Class<?> puConfig) {
-		return partitionedPu(createPuXmlConf(puConfig).toUri().toString());
-	}
-
-	public static MirrorPuConfigurer mirrorPu(String puXmlPath) {
-		return new MirrorPuConfigurer(puXmlPath);
-	}
-
-	public static MirrorPuConfigurer mirrorPu(Class<?> mirrorConfig) {
-		return mirrorPu(createPuXmlConf(mirrorConfig).toUri().toString());
+	@Configuration
+	public static class SpringConfig {
 	}
 }
