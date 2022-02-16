@@ -105,16 +105,17 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.gigaspaces</groupId>
 			<artifactId>xap-openspaces</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<properties>
@@ -125,7 +126,7 @@
 
 		<maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
 		<maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<maven-compiler-plugin.version>3.10.0</maven-compiler-plugin.version>
 		<maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
 		<maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
 		<maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
@@ -316,13 +317,6 @@
 					<showDeprecation>true</showDeprecation>
 					<failOnWarning>true</failOnWarning>
 				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.ow2.asm</groupId>
-						<artifactId>asm</artifactId>
-						<version>6.2</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 
 			<!-- Configures jar creation and manifest contents -->
