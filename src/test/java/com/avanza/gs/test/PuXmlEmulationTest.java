@@ -17,8 +17,8 @@ package com.avanza.gs.test;
 
 import static com.avanza.gs.test.PuXmlEmulation.createPuXmlConf;
 import static java.nio.file.Files.readAllLines;
-import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 
 import java.nio.file.Path;
 import java.util.List;
