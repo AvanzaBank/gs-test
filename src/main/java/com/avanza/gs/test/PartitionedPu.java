@@ -27,6 +27,8 @@ import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainer;
 import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainerProvider;
 import org.openspaces.pu.container.support.CompoundProcessingUnitContainer;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+
 import com.gigaspaces.security.directory.DefaultCredentialsProvider;
 
 /**
@@ -39,10 +41,11 @@ public final class PartitionedPu implements PuRunner {
 	private CompoundProcessingUnitContainer container;
 	private final String gigaSpaceBeanName = "gigaSpace";
 	private final String puXmlPath;
+	private final Resource puConfigResource;
 	private final Integer numberOfPrimaries;
 	private final Integer numberOfBackups;
 	private final Properties contextProperties = new Properties();
-	private final Map<String, Properties> beanProperies = new HashMap<>();
+	private final Map<String, Properties> beanProperties = new HashMap<>();
 	private final String lookupGroupName;
 	private final boolean autostart;
 	private final ApplicationContext parentContext;
@@ -50,10 +53,11 @@ public final class PartitionedPu implements PuRunner {
 
 	public PartitionedPu(PartitionedPuConfigurer configurer) {
 		this.puXmlPath = configurer.puXmlPath;
+		this.puConfigResource = configurer.puConfigResource;
 		this.numberOfBackups = configurer.numberOfBackups;
 		this.numberOfPrimaries = configurer.numberOfPrimaries;
 		this.contextProperties.putAll(configurer.contextProperties);
-		this.beanProperies.putAll(configurer.beanProperies);
+		this.beanProperties.putAll(configurer.beanProperies);
 		this.lookupGroupName = configurer.lookupGroupName;
 		this.autostart = configurer.autostart;
 		this.parentContext = configurer.parentContext;
@@ -64,7 +68,7 @@ public final class PartitionedPu implements PuRunner {
 	}
 
 	@Override
-	public void run() throws IOException {
+	public void run() {
 		try {
 			startContainers();
 		} catch (Exception e) {
@@ -76,7 +80,12 @@ public final class PartitionedPu implements PuRunner {
 		IntegratedProcessingUnitContainerProvider provider = new IntegratedProcessingUnitContainerProvider();
 		provider.setBeanLevelProperties(createBeanLevelProperties());
 		provider.setClusterInfo(createClusterInfo());
-		provider.addConfigLocation(puXmlPath);
+		if (puXmlPath != null) {
+			provider.addConfigLocation(puXmlPath);
+		}
+		if (puConfigResource != null) {
+			provider.addConfigLocation(puConfigResource);
+		}
 		if (parentContext != null) {
 			provider.setParentContext(parentContext);
 		}
@@ -115,9 +124,7 @@ public final class PartitionedPu implements PuRunner {
 	private BeanLevelProperties createBeanLevelProperties() {
 		BeanLevelProperties beanLevelProperties = new BeanLevelProperties();
 		beanLevelProperties.setContextProperties(contextProperties);
-		for (Map.Entry<String, Properties> beanProperties : beanProperies.entrySet()) {
-			beanLevelProperties.setBeanProperties(beanProperties.getKey(), beanProperties.getValue());
-		}
+		beanProperties.forEach(beanLevelProperties::setBeanProperties);
 		return beanLevelProperties;
 	}
 	
@@ -138,7 +145,7 @@ public final class PartitionedPu implements PuRunner {
 	
 	@Override
 	public GigaSpace getClusteredGigaSpace() {
-		return GigaSpace.class.cast(getPrimaryInstanceApplicationContext(0).getBean(this.gigaSpaceBeanName)).getClustered();
+		return getPrimaryInstanceApplicationContext(0).getBean(this.gigaSpaceBeanName, GigaSpace.class).getClustered();
 	}
 
 	@Override

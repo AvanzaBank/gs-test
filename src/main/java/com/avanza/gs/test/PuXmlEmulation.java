@@ -23,18 +23,30 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.StreamUtils;
 
 public class PuXmlEmulation {
+
 	public static Path createPuXmlConf(Class<?> puConfig) {
-		try (InputStream in = PuXmlEmulation.class.getResourceAsStream("/pu.xml.template")) {
+		try (InputStream in = createPuXmlResource(puConfig).getInputStream()) {
 			Path tempFile = Files.createTempFile("config", ".xml");
-			String content = StreamUtils.copyToString(in, UTF_8)
-					.replace("##CLASSNAME##", puConfig.getName());
-			Files.write(tempFile, content.getBytes(UTF_8));
+			Files.copy(in, tempFile);
 			return tempFile;
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
 	}
+
+	static Resource createPuXmlResource(Class<?> puConfig) {
+		try (InputStream in = PuXmlEmulation.class.getResourceAsStream("/pu.xml.template")) {
+			String content = StreamUtils.copyToString(in, UTF_8)
+					.replace("##CLASSNAME##", puConfig.getName());
+			return new ByteArrayResource(content.getBytes(UTF_8));
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
 }
