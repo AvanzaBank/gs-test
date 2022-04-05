@@ -16,6 +16,7 @@
 package com.avanza.gs.test;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,7 @@ public class PuXmlEmulation {
 	public static Path createPuXmlConf(Class<?> puConfig) {
 		try (InputStream in = createPuXmlResource(puConfig).getInputStream()) {
 			Path tempFile = Files.createTempFile("config", ".xml");
-			Files.copy(in, tempFile);
+			Files.copy(in, tempFile, REPLACE_EXISTING);
 			return tempFile;
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
