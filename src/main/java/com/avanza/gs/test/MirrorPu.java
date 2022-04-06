@@ -15,27 +15,30 @@
  */
 package com.avanza.gs.test;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.properties.BeanLevelProperties;
 import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainer;
 import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainerProvider;
 import org.springframework.context.ApplicationContext;
-
-import java.io.IOException;
-import java.util.Properties;
+import org.springframework.core.io.Resource;
 
 public class MirrorPu implements PuRunner {
 
 	private IntegratedProcessingUnitContainer container;
 	private final String gigaSpaceBeanName = "gigaSpace";
 	private final String puXmlPath;
-	private Properties contextProperties = new Properties();
+	private final Resource puConfigResource;
+	private final Properties contextProperties;
 	private final String lookupGroupName;
 	private final boolean autostart;
 	private final ApplicationContext parentContext;
 	
 	public MirrorPu(MirrorPuConfigurer config) {
 		this.puXmlPath = config.puXmlPath;
+		this.puConfigResource = config.puConfigResource;
 		this.contextProperties = config.properties;
 		this.lookupGroupName = config.lookupGroupName;
 		this.autostart = true;
@@ -45,7 +48,7 @@ public class MirrorPu implements PuRunner {
 	}
 
 	@Override
-	public void run() throws IOException {
+	public void run() {
 		try {
 			startContainers();
 		} catch (Exception e) {
@@ -56,7 +59,15 @@ public class MirrorPu implements PuRunner {
 	private void startContainers() throws IOException {
 		IntegratedProcessingUnitContainerProvider provider = new IntegratedProcessingUnitContainerProvider();
 		provider.setBeanLevelProperties(createBeanLevelProperties());
-		provider.addConfigLocation(puXmlPath);
+		if (puXmlPath == null && puConfigResource == null) {
+			throw new IllegalArgumentException("Either puXmlPath or puConfigResource needs to be set");
+		}
+ 		if (puXmlPath != null) {
+			provider.addConfigLocation(puXmlPath);
+		}
+		if (puConfigResource != null) {
+			provider.addConfigLocation(puConfigResource);
+		}
 		if (parentContext != null) {
 			provider.setParentContext(parentContext);
 		}
@@ -86,7 +97,7 @@ public class MirrorPu implements PuRunner {
 	
 	@Override
 	public GigaSpace getClusteredGigaSpace() {
-		return GigaSpace.class.cast(container.getApplicationContext().getBean(this.gigaSpaceBeanName)).getClustered();
+		return container.getApplicationContext().getBean(this.gigaSpaceBeanName, GigaSpace.class).getClustered();
 	}
 	
 	@Override
