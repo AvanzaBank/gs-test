@@ -80,6 +80,9 @@ public final class PartitionedPu implements PuRunner {
 		IntegratedProcessingUnitContainerProvider provider = new IntegratedProcessingUnitContainerProvider();
 		provider.setBeanLevelProperties(createBeanLevelProperties());
 		provider.setClusterInfo(createClusterInfo());
+		if (puXmlPath == null && puConfigResource == null) {
+			throw new IllegalArgumentException("Either puXmlPath or puConfigResource needs to be set");
+		}
 		if (puXmlPath != null) {
 			provider.addConfigLocation(puXmlPath);
 		}

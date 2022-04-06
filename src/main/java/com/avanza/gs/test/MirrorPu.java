@@ -59,7 +59,10 @@ public class MirrorPu implements PuRunner {
 	private void startContainers() throws IOException {
 		IntegratedProcessingUnitContainerProvider provider = new IntegratedProcessingUnitContainerProvider();
 		provider.setBeanLevelProperties(createBeanLevelProperties());
-		if (puXmlPath != null) {
+		if (puXmlPath == null && puConfigResource == null) {
+			throw new IllegalArgumentException("Either puXmlPath or puConfigResource needs to be set");
+		}
+ 		if (puXmlPath != null) {
 			provider.addConfigLocation(puXmlPath);
 		}
 		if (puConfigResource != null) {
