@@ -15,15 +15,14 @@
  */
 package com.avanza.gs.test;
 
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-import org.openspaces.core.GigaSpace;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.ListableBeanFactory;
-
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
+import org.openspaces.core.GigaSpace;
+import org.springframework.context.ApplicationContext;
 
 public class RunningPuImpl implements RunningPu {
 
@@ -127,14 +126,19 @@ public class RunningPuImpl implements RunningPu {
     }
 
     @Override
-    public BeanFactory getPrimaryInstanceApplicationContext(int partition) {
+    public ApplicationContext getPrimaryInstanceApplicationContext(int partition) {
         return this.runner.getPrimaryInstanceApplicationContext(partition);
     }
 
     @Override
-    public Collection<ListableBeanFactory> getApplicationContexts() {
+    public ApplicationContext getBackupInstanceApplicationContext(int partition, int backup) {
+        return this.runner.getBackupInstanceApplicationContext(partition, backup);
+    }
+
+    @Override
+    public Collection<ApplicationContext> getPrimaryApplicationContexts() {
         return IntStream.range(0, runner.getNumInstances())
-                .mapToObj(partition -> runner.getPrimaryInstanceApplicationContext(partition))
+                .mapToObj(runner::getPrimaryInstanceApplicationContext)
                 .collect(Collectors.toList());
     }
 }

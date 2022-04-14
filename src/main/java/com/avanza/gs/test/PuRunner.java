@@ -34,4 +34,6 @@ public interface PuRunner {
 
 	ApplicationContext getPrimaryInstanceApplicationContext(int partition);
 
+	ApplicationContext getBackupInstanceApplicationContext(int partition, int backup);
+
 }

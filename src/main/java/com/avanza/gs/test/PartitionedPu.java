@@ -65,6 +65,20 @@ public final class PartitionedPu implements PuRunner {
 		this.contextProperties.put("spaceName", UniqueSpaceNameLookup.getSpaceNameWithSequence(configurer.spaceName));
 		this.contextProperties.put("gs.space.url.arg.groups", lookupGroupName);
 		this.contextProperties.put("gs.space.url.arg.timeout", "10");
+
+		validateConfiguration();
+	}
+
+	private void validateConfiguration() {
+		if (puXmlPath == null && puConfigResource == null) {
+			throw new IllegalArgumentException("Either puXmlPath or puConfigResource needs to be set");
+		}
+		if (numberOfPrimaries <= 0) {
+			throw new IllegalArgumentException("Cannot be configured to have 0 or less primary instances");
+		}
+		if (numberOfBackups < 0) {
+			throw new IllegalArgumentException("A negative amount of backup instances is not valid");
+		}
 	}
 
 	@Override
@@ -80,9 +94,6 @@ public final class PartitionedPu implements PuRunner {
 		IntegratedProcessingUnitContainerProvider provider = new IntegratedProcessingUnitContainerProvider();
 		provider.setBeanLevelProperties(createBeanLevelProperties());
 		provider.setClusterInfo(createClusterInfo());
-		if (puXmlPath == null && puConfigResource == null) {
-			throw new IllegalArgumentException("Either puXmlPath or puConfigResource needs to be set");
-		}
 		if (puXmlPath != null) {
 			provider.addConfigLocation(puXmlPath);
 		}
@@ -153,8 +164,29 @@ public final class PartitionedPu implements PuRunner {
 
 	@Override
 	public ApplicationContext getPrimaryInstanceApplicationContext(int partition) {
-		IntegratedProcessingUnitContainer container = (IntegratedProcessingUnitContainer) this.container.getProcessingUnitContainers()[partition];
+		if (partition >= numberOfPrimaries || partition < 0) {
+			throw new IllegalArgumentException("Invalid primary partition argument: " + partition + ", valid numbers are 0 to " + (numberOfPrimaries - 1));
+		}
+		int containerNo = getContainerNoForPrimaryInstance(partition);
+		IntegratedProcessingUnitContainer container = (IntegratedProcessingUnitContainer) this.container.getProcessingUnitContainers()[containerNo];
 		return container.getApplicationContext();
+	}
+
+	@Override
+	public ApplicationContext getBackupInstanceApplicationContext(int partition, int backup) {
+		if (numberOfBackups == 0) {
+			throw new IllegalArgumentException("No backup instances have been configured, cannot fetch backup instance context");
+		}
+		if (backup > numberOfBackups || backup <= 0) {
+			throw new IllegalArgumentException("Invalid backup instance argument: " + backup + ", valid numbers are 1 to " + numberOfBackups);
+		}
+		int containerNo = getContainerNoForPrimaryInstance(partition) + backup;
+		IntegratedProcessingUnitContainer container = (IntegratedProcessingUnitContainer) this.container.getProcessingUnitContainers()[containerNo];
+		return container.getApplicationContext();
+	}
+
+	private int getContainerNoForPrimaryInstance(int partition) {
+		return partition * (numberOfBackups + 1);
 	}
 
 	@Override

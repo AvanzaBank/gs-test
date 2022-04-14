@@ -87,6 +87,11 @@ public class AsyncPuRunner implements PuRunner {
 	}
 
 	@Override
+	public ApplicationContext getBackupInstanceApplicationContext(int partition, int backup) {
+		return get(() -> puRunner.getBackupInstanceApplicationContext(partition, backup));
+	}
+
+	@Override
 	public int getNumInstances() {
 		return puRunner.getNumInstances();
 	}
