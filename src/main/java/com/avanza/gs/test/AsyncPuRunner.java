@@ -15,15 +15,19 @@
  */
 package com.avanza.gs.test;
 
-import org.openspaces.core.GigaSpace;
-import org.springframework.context.ApplicationContext;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.openspaces.core.GigaSpace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+
 public class AsyncPuRunner implements PuRunner {
+
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private final PuRunner puRunner;
 	private volatile ExecutorService worker;
@@ -39,7 +43,7 @@ public class AsyncPuRunner implements PuRunner {
 			try {
 				puRunner.run();
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.debug("Error running PU", e);
 			}
 		});
 	}
