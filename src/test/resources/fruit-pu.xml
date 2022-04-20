@@ -10,6 +10,7 @@
 	<os-core:space id="fruitSpace" url="/./fruit-space" mirror="true">
         <os-core:properties>
 	        <props>
+				<prop key="cluster-config.mirror-service.url">jini://*/*/fruit-space-mirror</prop>
 				<prop key="space-config.engine.cache_policy">1</prop>
 				<prop key="space-config.external-data-source.usage">read-only</prop>
 				<prop key="cluster-config.cache-loader.external-data-source">true</prop>
