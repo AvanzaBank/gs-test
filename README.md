@@ -8,7 +8,9 @@
 The GS-Test library contains utilities designed to simplify testing of applications implemented using GigaSpaces.
 
 #### Running an embedded Processing Unit
-The `PuConfigurers` class contains factory methods for builders for different types of processing units (partitioned pu, mirror pu). Those can be used to create an embedded processing unit (`RunningPu`). The `RunningPu` extends the `org.junit.rules.TestRule` interface which makes it easy to run a processing unit "around" either an entire test class using `@ClassRule`, or around each test case using `@Rule`.
+The `PuConfigurers` class contains factory methods for builders for different types of processing units (partitioned pu, mirror pu).
+Those can be used to create an embedded processing unit (`RunningPu`).
+The `RunningPu` extends the `org.junit.rules.TestRule` interface which makes it easy to run a processing unit "around" either an entire test class using `@ClassRule`, or around each test case using `@Rule`.
 
 ##### Example: Using @Rule and RunningPu to start/stop a pu around each test case
 ```java
@@ -43,6 +45,13 @@ class FruitTest {
 
 ```
 
+## Zookeeper
+
+Since version `2.1.0` this library comes bundled with Zookeeper, and switches to using a Zookeeper based leader selector for GigaSpaces.
+
+In order to run tests without Zookeeper, run the tests with system property `-Dcom.avanza.gs.test.zookeeper.disable=true`.
+In this case, a LUS-based selector will be used. 
+
 ## Maven
 
 GS-Test packed as a single jar file. Maven users can get GS-Test using the following coordinates:
@@ -51,13 +60,14 @@ GS-Test packed as a single jar file. Maven users can get GS-Test using the follo
 <dependency>
   <groupId>com.avanza.gs</groupId>
   <artifactId>gs-test</artifactId>
-  <version>1.0.0</version>
+  <version>2.1.0</version>
 </dependency>
 ``` 
 
-## Previous verisons
+## Previous versions
 
 [v0.1.x](https://github.com/AvanzaBank/gs-test/tree/v0.1.x) - Based on GigaSpaces 10.1.1 and Java 8
+[gs14.5](https://github.com/AvanzaBank/gs-test/tree/gs14.5) - Based on GigaSpaces 14.5 and Java 11
 
 ## License
 The GS-Test library is released under version 2.0 of the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).

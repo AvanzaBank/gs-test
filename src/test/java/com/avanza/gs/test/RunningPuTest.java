@@ -53,7 +53,7 @@ public class RunningPuTest {
 					hasEntry("schema", "default"),
 					hasEntry("container", "fruit-space_container1"),
 					hasEntry("mirror", "true"),
-					hasEntry("groups", JVMGlobalLus.getLookupGroupName()),
+					hasEntry("locators", JVMGlobalGigaSpacesManager.getLookupLocator()),
 					hasEntry("total_members", "1,1"),
 					hasEntry("space", "fruit-space"),
 					hasEntry("cluster_schema", "partitioned-sync2backup"),
@@ -91,7 +91,7 @@ public class RunningPuTest {
 				assertThat(GigaSpacesTestUtil.getSpaceUrlProperties(mirrorPu.getClusteredGigaSpace()), allOf(
 						hasEntry("schema", "mirror"),
 						hasEntry("container", "fruit-space-mirror_container"),
-						hasEntry("groups", JVMGlobalLus.getLookupGroupName()),
+						hasEntry("locators", JVMGlobalGigaSpacesManager.getLookupLocator()),
 						hasEntry("space", "fruit-space-mirror"),
 						hasEntry("state", "started"),
 						hasEntry("membername", "fruit-space-mirror_container:fruit-space-mirror")

@@ -46,7 +46,7 @@ public final class PartitionedPu implements PuRunner {
 	private final Integer numberOfBackups;
 	private final Properties contextProperties = new Properties();
 	private final Map<String, Properties> beanProperties = new HashMap<>();
-	private final String lookupGroupName;
+	private final String lookupLocator;
 	private final boolean autostart;
 	private final ApplicationContext parentContext;
 	private final boolean useAuthentication;
@@ -58,12 +58,12 @@ public final class PartitionedPu implements PuRunner {
 		this.numberOfPrimaries = configurer.numberOfPrimaries;
 		this.contextProperties.putAll(configurer.contextProperties);
 		this.beanProperties.putAll(configurer.beanProperies);
-		this.lookupGroupName = configurer.lookupGroupName;
+		this.lookupLocator = configurer.lookupLocator != null ? configurer.lookupLocator : JVMGlobalGigaSpacesManager.getLookupLocator();
 		this.autostart = configurer.autostart;
 		this.parentContext = configurer.parentContext;
 		this.useAuthentication = configurer.useAuthentication;
 		this.contextProperties.put("spaceName", UniqueSpaceNameLookup.getSpaceNameWithSequence(configurer.spaceName));
-		this.contextProperties.put("gs.space.url.arg.groups", lookupGroupName);
+		this.contextProperties.put("gs.space.url.arg.locators", lookupLocator);
 		this.contextProperties.put("gs.space.url.arg.timeout", "10");
 
 		validateConfiguration();
@@ -148,8 +148,8 @@ public final class PartitionedPu implements PuRunner {
 	}
 
 	@Override
-	public String getLookupGroupName() {
-		return this.lookupGroupName;
+	public String getLookupLocator() {
+		return this.lookupLocator;
 	}
 	
 	@Override

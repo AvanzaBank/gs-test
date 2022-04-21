@@ -59,8 +59,8 @@ public class AsyncPuRunner implements PuRunner {
 	}
 
 	@Override
-	public String getLookupGroupName() {
-		return puRunner.getLookupGroupName();
+	public String getLookupLocator() {
+		return puRunner.getLookupLocator();
 	}
 	
 	@Override

@@ -106,7 +106,6 @@ public class RunningPuImpl implements RunningPu {
 
     @Override
     public synchronized void start() throws Exception {
-        System.setProperty("com.gs.jini_lus.groups", runner.getLookupGroupName());
         this.state = this.state.start(this.runner);
     }
 
@@ -116,8 +115,8 @@ public class RunningPuImpl implements RunningPu {
     }
 
     @Override
-    public String getLookupGroupName() {
-        return this.runner.getLookupGroupName();
+    public String getLookupLocator() {
+        return this.runner.getLookupLocator();
     }
 
     @Override
