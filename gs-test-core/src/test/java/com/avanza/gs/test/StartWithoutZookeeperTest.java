@@ -29,14 +29,14 @@ import com.avanza.gs.test.helpers.FruitPojo;
 import com.gigaspaces.cluster.activeelection.LusBasedSelectorHandler;
 import com.gigaspaces.internal.server.space.SpaceImpl;
 
-public class StartWithoutZooKeeperTest {
+public class StartWithoutZookeeperTest {
 
 	@Test
-	@Ignore("This test is disabled as it can't run in the same JVM as the ZooKeeper-enabled tests. "
+	@Ignore("This test is disabled as it can't run in the same JVM as the Zookeeper-enabled tests. "
 			+ "GigaSpaces only supports a single setup in a single runtime. "
-			+ "Therefore, this test can only be run manually as a separate test.")
+			+ "Therefore, this test can only be run manually as a separate test")
 	public void testStartingWithLusBasedSelectorHandler() throws Exception {
-		// Setting this system property will start without ZooKeeper, causing LUS to be used as a selector handler
+		// Setting this system property will start without Zookeeper, causing LUS to be used as a selector handler
 		System.setProperty("com.avanza.gs.test.zookeeper.disable", "true");
 
 		try (RunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
