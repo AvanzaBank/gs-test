@@ -15,12 +15,13 @@
  */
 package com.avanza.gs.test;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.junit.rules.TestRule;
 import org.openspaces.core.GigaSpace;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ListableBeanFactory;
-
-import java.util.Collection;
+import org.springframework.context.ApplicationContext;
 
 public interface RunningPu extends TestRule, AutoCloseable  {
 	
@@ -34,8 +35,20 @@ public interface RunningPu extends TestRule, AutoCloseable  {
 	
 	void stop() throws Exception;
 
-	BeanFactory getPrimaryInstanceApplicationContext(int partition);
+	ApplicationContext getPrimaryInstanceApplicationContext(int partition);
 
-	Collection<ListableBeanFactory> getApplicationContexts();
+	ApplicationContext getBackupInstanceApplicationContext(int partition, int backup);
+
+	/**
+	 * @deprecated use {@link #getPrimaryApplicationContexts()}
+	 */
+	@Deprecated
+	default Collection<ListableBeanFactory> getApplicationContexts() {
+		return getPrimaryApplicationContexts().stream()
+				.map(context -> (ListableBeanFactory) context)
+				.collect(Collectors.toList());
+	}
+
+	Collection<ApplicationContext> getPrimaryApplicationContexts();
 
 }

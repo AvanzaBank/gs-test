@@ -106,6 +106,11 @@ public class MirrorPu implements PuRunner {
 	}
 
 	@Override
+	public ApplicationContext getBackupInstanceApplicationContext(int partition, int backup) {
+		throw new UnsupportedOperationException("Mirror PU does not contain any backup");
+	}
+
+	@Override
 	public int getNumInstances() {
 		return 1;
 	}
