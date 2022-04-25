@@ -2,8 +2,14 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.avanza.gs</groupId>
-	<artifactId>gs-test</artifactId>
+	<artifactId>gs-test-parent</artifactId>
+	<packaging>pom</packaging>
 	<version>2.1.0-SNAPSHOT</version>
+	<modules>
+		<module>gs-test-core</module>
+		<module>gs-test</module>
+		<module>gs-test-junit4</module>
+	</modules>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 	<url>https://github.com/AvanzaBank/gs-test</url>
@@ -99,128 +105,6 @@
 		</profile>
 	</profiles>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-test</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.gigaspaces</groupId>
-			<artifactId>xap-openspaces</artifactId>
-			<!-- Exclusions are based on libraries not in the "required" folder in a gigaspaces installation -->
-			<exclusions>
-				<exclusion>
-					<groupId>org.gigaspaces</groupId>
-					<artifactId>xap-jms</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>net.java.dev.jna</groupId>
-					<artifactId>jna</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>net.java.dev.jna</groupId>
-					<artifactId>jna-platform</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.github.oshi</groupId>
-					<artifactId>oshi-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-orm</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-web</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-jdbc</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.security</groupId>
-					<artifactId>spring-security-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.security</groupId>
-					<artifactId>spring-security-web</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.security</groupId>
-					<artifactId>spring-security-config</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.annotation</groupId>
-					<artifactId>javax.annotation-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.jboss.jbossts</groupId>
-					<artifactId>jbossjta</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.jboss.spec.javax.servlet</groupId>
-					<artifactId>jboss-servlet-api_3.0_spec</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.hsqldb</groupId>
-					<artifactId>hsqldb</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.jboss.spec.javax.transaction</groupId>
-					<artifactId>jboss-transaction-api_1.1_spec</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.geronimo.specs</groupId>
-					<artifactId>geronimo-j2ee-connector_1.5_spec</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.atomikos</groupId>
-					<artifactId>transactions-jta</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.gigaspaces</groupId>
-			<artifactId>xap-service-grid</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.openspaces</groupId>
-			<artifactId>xap-zookeeper</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.awaitility</groupId>
-			<artifactId>awaitility</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 	<properties>
 		<!-- -Xdoclint:NONE ignores validation errors in javadoc -->
 		<additionalparam>-Xdoclint:none</additionalparam>
@@ -264,6 +148,14 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- modules in this multi-module project -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>gs-test-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- external dependencies -->
 			<dependency>
 				<groupId>org.gigaspaces</groupId>
 				<artifactId>xap-openspaces</artifactId>
@@ -448,7 +340,7 @@
 					<artifactId>license-maven-plugin</artifactId>
 					<version>${license-maven-plugin.version}</version>
 					<configuration>
-						<header>src/license/apache2.txt</header>
+						<header>license/apache2.txt</header>
 						<properties>
 							<owner>Avanza Bank AB</owner>
 							<inceptionYear>2014</inceptionYear>
