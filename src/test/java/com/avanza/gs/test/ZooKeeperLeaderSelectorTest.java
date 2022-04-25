@@ -30,10 +30,10 @@ import org.springframework.context.support.AbstractApplicationContext;
 import com.avanza.gs.test.helpers.FruitPojo;
 import com.gigaspaces.internal.server.space.SpaceImpl;
 
-public class ZookeeperLeaderSelectorTest {
+public class ZooKeeperLeaderSelectorTest {
 
 	@Test
-	public void testZookeeperFailover() throws Exception {
+	public void testZooKeeperFailover() throws Exception {
 		try (RunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
 				.numberOfPrimaries(1)
 				.numberOfBackups(1)

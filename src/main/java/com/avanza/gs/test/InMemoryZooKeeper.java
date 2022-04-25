@@ -29,39 +29,39 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StreamUtils;
 
 /**
- * This starts an in-memory Zookeeper, and also creates a {@code zoo.cfg} used by GigaSpaces.
+ * This starts an in-memory ZooKeeper, and also creates a {@code zoo.cfg} used by GigaSpaces.
  */
-final class InMemoryZookeeper implements AutoCloseable {
+final class InMemoryZooKeeper implements AutoCloseable {
 
-	private static final Logger LOG = LoggerFactory.getLogger(InMemoryZookeeper.class);
+	private static final Logger LOG = LoggerFactory.getLogger(InMemoryZooKeeper.class);
 
-	private final TestingServer zookeeperServer;
-	private final Path zookeeperConfig;
+	private final TestingServer zooKeeperServer;
+	private final Path zooKeeperConfig;
 
-	public InMemoryZookeeper() {
-		this.zookeeperServer = startZookeeper();
-		this.zookeeperConfig = createZooCfg(zookeeperServer.getPort());
+	public InMemoryZooKeeper() {
+		this.zooKeeperServer = startZooKeeper();
+		this.zooKeeperConfig = createZooCfg(zooKeeperServer.getPort());
 	}
 
-	public Path getZookeeperConfig() {
-		return zookeeperConfig;
+	public Path getZooKeeperConfig() {
+		return zooKeeperConfig;
 	}
 
-	private static TestingServer startZookeeper() {
+	private static TestingServer startZooKeeper() {
 		try {
 			return new TestingServer(true);
 		} catch (Exception e) {
-			throw new RuntimeException("Could not start Zookeeper test server", e);
+			throw new RuntimeException("Could not start ZooKeeper test server", e);
 		}
 	}
 
 	/**
 	 * Creates {@code zoo.cfg} that is read by {@link com.gigaspaces.grid.zookeeper.ZookeeperConfig}
 	 */
-	private static Path createZooCfg(int zookeeperPort) {
-		try (InputStream in = InMemoryZookeeper.class.getResourceAsStream("/zoo.cfg.template")) {
+	private static Path createZooCfg(int zooKeeperPort) {
+		try (InputStream in = InMemoryZooKeeper.class.getResourceAsStream("/zoo.cfg.template")) {
 			String content = StreamUtils.copyToString(in, UTF_8)
-					.replace("##CLIENT_PORT##", Integer.toString(zookeeperPort));
+					.replace("##CLIENT_PORT##", Integer.toString(zooKeeperPort));
 
 			Path tempFile = Files.createTempFile("zoo", ".cfg");
 			return Files.writeString(tempFile, content);
@@ -72,11 +72,11 @@ final class InMemoryZookeeper implements AutoCloseable {
 
 	@Override
 	public void close() throws Exception {
-		zookeeperServer.close();
+		zooKeeperServer.close();
 		try {
-			Files.delete(zookeeperConfig);
+			Files.delete(zooKeeperConfig);
 		} catch (IOException e) {
-			LOG.warn("Could not delete zoo.cfg at {}", zookeeperConfig);
+			LOG.warn("Could not delete zoo.cfg at {}", zooKeeperConfig);
 		}
 	}
 }

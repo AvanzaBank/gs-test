@@ -45,11 +45,11 @@ class FruitTest {
 
 ```
 
-## Zookeeper
+## ZooKeeper
 
-Since version `2.1.0` this library comes bundled with Zookeeper, and switches to using a Zookeeper based leader selector for GigaSpaces.
+Since version `2.1.0` this library comes bundled with ZooKeeper, and switches to using a ZooKeeper based leader selector for GigaSpaces.
 
-In order to run tests without Zookeeper, run the tests with system property `-Dcom.avanza.gs.test.zookeeper.disable=true`.
+In order to run tests without ZooKeeper, run the tests with system property `-Dcom.avanza.gs.test.zookeeper.disable=true`.
 In this case, a LUS-based selector will be used. 
 
 ## Maven
