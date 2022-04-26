@@ -23,7 +23,7 @@ import org.openspaces.core.GigaSpace;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
-public interface RunningPu extends TestRule, AutoCloseable  {
+public interface GenericRunningPu extends TestRule, AutoCloseable  {
 
 	// TODO: Rename to ManagedPu
 

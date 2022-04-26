@@ -24,7 +24,7 @@ import org.junit.runners.model.Statement;
 import org.openspaces.core.GigaSpace;
 import org.springframework.context.ApplicationContext;
 
-public class RunningPuImpl implements RunningPu {
+public class StandaloneRunningPu implements GenericRunningPu {
 
     private final PuRunner runner;
     private volatile State state;
@@ -72,7 +72,7 @@ public class RunningPuImpl implements RunningPu {
         abstract State stop(PuRunner runner) throws Exception;
     }
 
-    public RunningPuImpl(PuRunner runner) {
+    public StandaloneRunningPu(PuRunner runner) {
         this.runner = runner;
         this.state = State.NEW;
     }

@@ -20,7 +20,7 @@ import java.util.Properties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
-public class MirrorPuConfigurer {
+public class AbstractMirrorPuConfigurer {
 
 	String puXmlPath;
 	Resource puConfigResource;
@@ -28,20 +28,20 @@ public class MirrorPuConfigurer {
 	ApplicationContext parentContext;
 	String lookupLocator;
 
-	public MirrorPuConfigurer(String puXmlPath) {
+	public AbstractMirrorPuConfigurer(String puXmlPath) {
 		this.puXmlPath = puXmlPath;
 	}
 
-	public MirrorPuConfigurer(Resource puConfigResource) {
+	public AbstractMirrorPuConfigurer(Resource puConfigResource) {
 		this.puConfigResource = puConfigResource;
 	}
 
-	public MirrorPuConfigurer contextProperty(String propertyName, String propertyValue) {
+	public AbstractMirrorPuConfigurer contextProperty(String propertyName, String propertyValue) {
 		this.properties.setProperty(propertyName, propertyValue);
 		return this;
 	}
 
-	public MirrorPuConfigurer parentContext(ApplicationContext parentContext) {
+	public AbstractMirrorPuConfigurer parentContext(ApplicationContext parentContext) {
 		this.parentContext = parentContext;
 		return this;
 	}
@@ -51,17 +51,17 @@ public class MirrorPuConfigurer {
 	 *             {@link #lookupLocator(String)} for unicast. Calling this method will have no effect.
 	 */
 	@Deprecated
-	public MirrorPuConfigurer lookupGroup(String group) {
+	public AbstractMirrorPuConfigurer lookupGroup(String group) {
 		return this;
 	}
 		
-	public MirrorPuConfigurer lookupLocator(String lookupLocator) {
+	public AbstractMirrorPuConfigurer lookupLocator(String lookupLocator) {
 		this.lookupLocator = lookupLocator;
 		return this;
 	}
 	
-	public RunningPu configure() {
-		return new RunningPuImpl(new MirrorPu(this));
+	public GenericRunningPu configure() {
+		return new StandaloneRunningPu(new MirrorPu(this));
 	}
 
 }

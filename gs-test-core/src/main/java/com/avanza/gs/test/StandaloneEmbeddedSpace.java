@@ -24,16 +24,16 @@ import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;
 import org.openspaces.core.space.UrlSpaceConfigurer;
 
-public class EmbeddedSpace implements TestRule {
+public class StandaloneEmbeddedSpace implements TestRule {
 
 	private final UrlSpaceConfigurer urlSpaceConfigurer;
 	private final GigaSpace gigaSpace;
 
-	public EmbeddedSpace() {
+	public StandaloneEmbeddedSpace() {
 		this("space-" + UUID.randomUUID().toString());
 	}
 	
-	public EmbeddedSpace(String spaceName) {
+	public StandaloneEmbeddedSpace(String spaceName) {
 		this.urlSpaceConfigurer = new UrlSpaceConfigurer("/./" + spaceName)
 				.lookupLocators(JVMGlobalGigaSpacesManager.getLookupLocator());
 		this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer.space()).gigaSpace();
