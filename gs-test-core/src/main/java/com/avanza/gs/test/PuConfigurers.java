@@ -21,27 +21,27 @@ import org.springframework.core.io.Resource;
 
 public class PuConfigurers {
 
-	public static PartitionedPuConfigurer partitionedPu(String puXmlPath) {
-		return new PartitionedPuConfigurer(puXmlPath);
+	public static AbstractPartitionedPuConfigurer partitionedPu(String puXmlPath) {
+		return new AbstractPartitionedPuConfigurer(puXmlPath);
 	}
 
-	public static PartitionedPuConfigurer partitionedPu(Resource puConfigResource) {
-		return new PartitionedPuConfigurer(puConfigResource);
+	public static AbstractPartitionedPuConfigurer partitionedPu(Resource puConfigResource) {
+		return new AbstractPartitionedPuConfigurer(puConfigResource);
 	}
 
-	public static PartitionedPuConfigurer partitionedPu(Class<?> puConfig) {
+	public static AbstractPartitionedPuConfigurer partitionedPu(Class<?> puConfig) {
 		return partitionedPu(createPuXmlResource(puConfig));
 	}
 
-	public static MirrorPuConfigurer mirrorPu(String puXmlPath) {
-		return new MirrorPuConfigurer(puXmlPath);
+	public static AbstractMirrorPuConfigurer mirrorPu(String puXmlPath) {
+		return new AbstractMirrorPuConfigurer(puXmlPath);
 	}
 
-	public static MirrorPuConfigurer mirrorPu(Resource puConfigResource) {
-		return new MirrorPuConfigurer(puConfigResource);
+	public static AbstractMirrorPuConfigurer mirrorPu(Resource puConfigResource) {
+		return new AbstractMirrorPuConfigurer(puConfigResource);
 	}
 
-	public static MirrorPuConfigurer mirrorPu(Class<?> mirrorConfig) {
+	public static AbstractMirrorPuConfigurer mirrorPu(Class<?> mirrorConfig) {
 		return mirrorPu(createPuXmlResource(mirrorConfig));
 	}
 

@@ -31,7 +31,7 @@ import com.avanza.gs.test.helpers.GigaSpacesTestUtil;
 
 public class EmbeddedSpaceTest {
 
-	private EmbeddedSpace embeddedSpace;
+	private StandaloneEmbeddedSpace embeddedSpace;
 
 	@After
 	public void after() {
@@ -42,7 +42,7 @@ public class EmbeddedSpaceTest {
 
 	@Test
 	public void createsASpace() {
-		embeddedSpace = new EmbeddedSpace();
+		embeddedSpace = new StandaloneEmbeddedSpace();
 		GigaSpace gigaSpace = embeddedSpace.getGigaSpace();
 
 		FruitPojo pojo = new FruitPojo("banana");
@@ -53,7 +53,7 @@ public class EmbeddedSpaceTest {
 
 	@Test
 	public void destroysTheSpace() {
-		embeddedSpace = new EmbeddedSpace();
+		embeddedSpace = new StandaloneEmbeddedSpace();
 		GigaSpace gigaSpace = embeddedSpace.getGigaSpace();
 		embeddedSpace.destroy();
 		assertThrows(RemoteDataAccessException.class, () -> gigaSpace.write(new FruitPojo("apple")));
@@ -61,13 +61,13 @@ public class EmbeddedSpaceTest {
 
 	@Test
 	public void createsASpaceWithGivenName() {
-		embeddedSpace = new EmbeddedSpace("custom-name");
+		embeddedSpace = new StandaloneEmbeddedSpace("custom-name");
 		assertThat(embeddedSpace.getGigaSpace().getName(), is("custom-name"));
 	}
 
 	@Test
 	public void isConfiguredWithCorrectSpaceUrl() {
-		embeddedSpace = new EmbeddedSpace("space");
+		embeddedSpace = new StandaloneEmbeddedSpace("space");
 
 		// Verify SpaceURL properties
 		assertThat(GigaSpacesTestUtil.getSpaceUrlProperties(embeddedSpace.getGigaSpace()), allOf(

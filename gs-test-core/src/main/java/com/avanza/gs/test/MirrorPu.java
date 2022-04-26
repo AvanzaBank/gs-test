@@ -36,7 +36,7 @@ public class MirrorPu implements PuRunner {
 	private final boolean autostart;
 	private final ApplicationContext parentContext;
 	
-	public MirrorPu(MirrorPuConfigurer config) {
+	public MirrorPu(AbstractMirrorPuConfigurer config) {
 		this.puXmlPath = config.puXmlPath;
 		this.puConfigResource = config.puConfigResource;
 		this.contextProperties = config.properties;

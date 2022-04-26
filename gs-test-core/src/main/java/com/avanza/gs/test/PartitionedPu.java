@@ -51,7 +51,7 @@ public final class PartitionedPu implements PuRunner {
 	private final ApplicationContext parentContext;
 	private final boolean useAuthentication;
 
-	public PartitionedPu(PartitionedPuConfigurer configurer) {
+	public PartitionedPu(AbstractPartitionedPuConfigurer configurer) {
 		this.puXmlPath = configurer.puXmlPath;
 		this.puConfigResource = configurer.puConfigResource;
 		this.numberOfBackups = configurer.numberOfBackups;

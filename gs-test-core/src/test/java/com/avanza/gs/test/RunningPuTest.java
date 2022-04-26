@@ -37,7 +37,7 @@ public class RunningPuTest {
 
 	@Test
 	public void testStartingPuWithPrimaryAndBackup() throws Exception {
-		try (RunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
+		try (GenericRunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
 				.numberOfPrimaries(1)
 				.numberOfBackups(1)
 				.configure()) {
@@ -66,8 +66,8 @@ public class RunningPuTest {
 
 	@Test
 	public void testStartingPuWithPrimaryAndMirror() throws Exception {
-		try (RunningPu mirrorPu = PuConfigurers.mirrorPu("classpath:/fruit-mirror-pu.xml").configure()) {
-			try (RunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
+		try (GenericRunningPu mirrorPu = PuConfigurers.mirrorPu("classpath:/fruit-mirror-pu.xml").configure()) {
+			try (GenericRunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
 					.numberOfPrimaries(1)
 					.numberOfBackups(1)
 					.configure()) {

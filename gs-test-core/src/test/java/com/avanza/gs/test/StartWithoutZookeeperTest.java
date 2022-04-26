@@ -39,7 +39,7 @@ public class StartWithoutZookeeperTest {
 		// Setting this system property will start without Zookeeper, causing LUS to be used as a selector handler
 		System.setProperty("com.avanza.gs.test.zookeeper.disable", "true");
 
-		try (RunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
+		try (GenericRunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
 				.numberOfPrimaries(1)
 				.numberOfBackups(1)
 				.configure()) {

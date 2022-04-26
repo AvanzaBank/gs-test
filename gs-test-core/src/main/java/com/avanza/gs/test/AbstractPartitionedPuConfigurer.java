@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
-public final class PartitionedPuConfigurer {
+public final class AbstractPartitionedPuConfigurer {
 	
 	String puXmlPath;
 	Resource puConfigResource;
@@ -37,35 +37,35 @@ public final class PartitionedPuConfigurer {
 	ApplicationContext parentContext;
 	boolean useAuthentication;
 
-	public PartitionedPuConfigurer(String puXmlPath) {
+	public AbstractPartitionedPuConfigurer(String puXmlPath) {
 		this.puXmlPath = puXmlPath;
 	}
 
-	public PartitionedPuConfigurer(Resource puConfigResource) {
+	public AbstractPartitionedPuConfigurer(Resource puConfigResource) {
 		this.puConfigResource = puConfigResource;
 	}
 
-	public PartitionedPuConfigurer parentContext(ApplicationContext parentContext) {
+	public AbstractPartitionedPuConfigurer parentContext(ApplicationContext parentContext) {
 		this.parentContext = parentContext;
 		return this;
 	}
 
-	public PartitionedPuConfigurer numberOfPrimaries(int numberOfPrimaries) {
+	public AbstractPartitionedPuConfigurer numberOfPrimaries(int numberOfPrimaries) {
 		this.numberOfPrimaries = numberOfPrimaries;
 		return this;
 	}
 
-	public PartitionedPuConfigurer numberOfBackups(int numberOfBackups) {
+	public AbstractPartitionedPuConfigurer numberOfBackups(int numberOfBackups) {
 		this.numberOfBackups = numberOfBackups;
 		return this;
 	}
 
-	public PartitionedPuConfigurer beanProperties(String beanName, Properties beanProperties) {
+	public AbstractPartitionedPuConfigurer beanProperties(String beanName, Properties beanProperties) {
 		this.beanProperies.put(beanName, beanProperties);
 		return this;
 	}
 
-	public PartitionedPuConfigurer startAsync(boolean startAsync) {
+	public AbstractPartitionedPuConfigurer startAsync(boolean startAsync) {
 		this.startAsync  = startAsync;
 		return this;
 	}
@@ -75,48 +75,48 @@ public final class PartitionedPuConfigurer {
 	 *             {@link #lookupLocator(String)} for unicast. Calling this method will have no effect.
 	 */
 	@Deprecated
-	public PartitionedPuConfigurer lookupGroup(String group) {
+	public AbstractPartitionedPuConfigurer lookupGroup(String group) {
 		return this;
 	}
 
-	public PartitionedPuConfigurer lookupLocator(String lookupLocator) {
+	public AbstractPartitionedPuConfigurer lookupLocator(String lookupLocator) {
 		this.lookupLocator = lookupLocator;
 		return this;
 	}
 
-	public RunningPu configure() {
+	public GenericRunningPu configure() {
 		if (startAsync) {
-			return new RunningPuImpl(new AsyncPuRunner(new PartitionedPu(this)));
+			return new StandaloneRunningPu(new AsyncPuRunner(new PartitionedPu(this)));
 		}
-		return new RunningPuImpl(new PartitionedPu(this));
+		return new StandaloneRunningPu(new PartitionedPu(this));
 	}
 
-	public PartitionedPuConfigurer contextProperties(Properties properties) {
+	public AbstractPartitionedPuConfigurer contextProperties(Properties properties) {
 		this.contextProperties = properties;
 		return this;
 	}
 	
-	public PartitionedPuConfigurer contextProperties(ContextProperties properties) {
+	public AbstractPartitionedPuConfigurer contextProperties(ContextProperties properties) {
 		this.contextProperties = properties.getProperties();
 		return this;
 	}
 
-	public PartitionedPuConfigurer contextProperty(String name, String value) {
+	public AbstractPartitionedPuConfigurer contextProperty(String name, String value) {
 		this.contextProperties.setProperty(name, value);
 		return this;
 	}
 
-	public PartitionedPuConfigurer autostart(boolean autostart) {
+	public AbstractPartitionedPuConfigurer autostart(boolean autostart) {
 		this.autostart = autostart;
 		return this;
 	}
 
-	public PartitionedPuConfigurer spaceName(String spaceName) {
+	public AbstractPartitionedPuConfigurer spaceName(String spaceName) {
 		this.spaceName = spaceName;
 		return this;
 	}
 
-	public PartitionedPuConfigurer withAuthentication() {
+	public AbstractPartitionedPuConfigurer withAuthentication() {
 		this.useAuthentication = true;
 		return this;
 	}
