@@ -15,15 +15,25 @@
  */
 package com.avanza.gs.test;
 
+import static com.avanza.gs.test.PuXmlEmulation.createPuXmlResource;
+
 import java.io.IOException;
 
-public class PuApp {
+import com.avanza.gs.test.StandalonePuConfigurers.StandalonePartitionedPuConfigurer;
 
-	private PartitionedPu partitionedPu;
+public class PuApp implements AutoCloseable {
+
+	private final PartitionedPu partitionedPu;
 
 	private PuApp(String puXmlPath) {
-		partitionedPu = new PartitionedPu(PuConfigurers
-				.partitionedPu(puXmlPath).numberOfPrimaries(1)
+		partitionedPu = new PartitionedPu(new StandalonePartitionedPuConfigurer(puXmlPath)
+				.numberOfPrimaries(1)
+				.numberOfBackups(0));
+	}
+
+	private PuApp(Class<?> puConfig) {
+		partitionedPu = new PartitionedPu(new StandalonePartitionedPuConfigurer(createPuXmlResource(puConfig))
+				.numberOfPrimaries(1)
 				.numberOfBackups(0));
 	}
 
@@ -37,12 +47,27 @@ public class PuApp {
 		}
 	}
 
+	public static PuApp run(Class<?> puConfig) {
+		try {
+			PuApp puApp = new PuApp(puConfig);
+			puApp.start();
+			return puApp;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private void start() throws IOException {
 		this.partitionedPu.run();
 	}
 	
-	public void stop() throws IOException {
+	public void stop() {
 		this.partitionedPu.shutdown();
+	}
+
+	@Override
+	public void close() {
+		stop();
 	}
 
 }

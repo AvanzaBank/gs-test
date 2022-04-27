@@ -29,7 +29,7 @@ public class ContainerApplicationContextTest {
 
 	@Test
 	public void testFetchingApplicationContextWithBackup() throws Exception {
-		try (GenericRunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
+		try (GenericRunningPu fruitPu = StandalonePuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
 				.numberOfPrimaries(2)
 				.numberOfBackups(1)
 				.configure()) {
@@ -56,7 +56,7 @@ public class ContainerApplicationContextTest {
 
 	@Test
 	public void testFetchingApplicationContextWithoutBackup() throws Exception {
-		try (GenericRunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
+		try (GenericRunningPu fruitPu = StandalonePuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
 				.numberOfPrimaries(2)
 				.numberOfBackups(0)
 				.configure()) {

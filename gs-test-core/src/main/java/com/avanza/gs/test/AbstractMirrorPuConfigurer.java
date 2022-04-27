@@ -20,30 +20,32 @@ import java.util.Properties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
-public class AbstractMirrorPuConfigurer {
+public abstract class AbstractMirrorPuConfigurer<T extends AbstractMirrorPuConfigurer<T, S>, S extends GenericRunningPu> implements MirrorConfig {
 
-	String puXmlPath;
-	Resource puConfigResource;
-	Properties properties = new Properties();
-	ApplicationContext parentContext;
-	String lookupLocator;
+	private final String puXmlPath;
+	private final Resource puConfigResource;
+	private final Properties properties = new Properties();
+	private ApplicationContext parentContext;
+	private String lookupLocator;
 
 	public AbstractMirrorPuConfigurer(String puXmlPath) {
 		this.puXmlPath = puXmlPath;
+		this.puConfigResource = null;
 	}
 
 	public AbstractMirrorPuConfigurer(Resource puConfigResource) {
+		this.puXmlPath = null;
 		this.puConfigResource = puConfigResource;
 	}
 
-	public AbstractMirrorPuConfigurer contextProperty(String propertyName, String propertyValue) {
+	public T contextProperty(String propertyName, String propertyValue) {
 		this.properties.setProperty(propertyName, propertyValue);
-		return this;
+		return me();
 	}
 
-	public AbstractMirrorPuConfigurer parentContext(ApplicationContext parentContext) {
+	public T parentContext(ApplicationContext parentContext) {
 		this.parentContext = parentContext;
-		return this;
+		return me();
 	}
 
 	/**
@@ -51,17 +53,49 @@ public class AbstractMirrorPuConfigurer {
 	 *             {@link #lookupLocator(String)} for unicast. Calling this method will have no effect.
 	 */
 	@Deprecated
-	public AbstractMirrorPuConfigurer lookupGroup(String group) {
-		return this;
+	public T lookupGroup(String group) {
+		return me();
 	}
 		
-	public AbstractMirrorPuConfigurer lookupLocator(String lookupLocator) {
+	public T lookupLocator(String lookupLocator) {
 		this.lookupLocator = lookupLocator;
-		return this;
+		return me();
 	}
 	
-	public GenericRunningPu configure() {
-		return new StandaloneRunningPu(new MirrorPu(this));
+	public abstract S configure();
+
+	protected PuRunner createPuRunner() {
+		return new MirrorPu(this);
+	}
+
+	@Override
+	public String getPuXmlPath() {
+		return puXmlPath;
+	}
+
+	@Override
+	public Resource getPuConfigResource() {
+		return puConfigResource;
+	}
+
+	@Override
+	public Properties getProperties() {
+		return properties;
+	}
+
+	@Override
+	public ApplicationContext getParentContext() {
+		return parentContext;
+	}
+
+	@Override
+	public String getLookupLocator() {
+		return lookupLocator;
+	}
+
+	@SuppressWarnings("unchecked")
+	private T me() {
+		return (T) this;
 	}
 
 }
