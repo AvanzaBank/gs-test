@@ -18,12 +18,11 @@ package com.avanza.gs.test;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import org.junit.rules.TestRule;
 import org.openspaces.core.GigaSpace;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
-public interface GenericRunningPu extends TestRule, AutoCloseable  {
+public interface GenericRunningPu extends AutoCloseable {
 
 	// TODO: Rename to ManagedPu
 

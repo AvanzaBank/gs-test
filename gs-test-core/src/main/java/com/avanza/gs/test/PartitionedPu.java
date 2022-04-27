@@ -51,18 +51,18 @@ public final class PartitionedPu implements PuRunner {
 	private final ApplicationContext parentContext;
 	private final boolean useAuthentication;
 
-	public PartitionedPu(AbstractPartitionedPuConfigurer configurer) {
-		this.puXmlPath = configurer.puXmlPath;
-		this.puConfigResource = configurer.puConfigResource;
-		this.numberOfBackups = configurer.numberOfBackups;
-		this.numberOfPrimaries = configurer.numberOfPrimaries;
-		this.contextProperties.putAll(configurer.contextProperties);
-		this.beanProperties.putAll(configurer.beanProperies);
-		this.lookupLocator = configurer.lookupLocator != null ? configurer.lookupLocator : JVMGlobalGigaSpacesManager.getLookupLocator();
-		this.autostart = configurer.autostart;
-		this.parentContext = configurer.parentContext;
-		this.useAuthentication = configurer.useAuthentication;
-		this.contextProperties.put("spaceName", UniqueSpaceNameLookup.getSpaceNameWithSequence(configurer.spaceName));
+	public PartitionedPu(PuConfig config) {
+		this.puXmlPath = config.getPuXmlPath();
+		this.puConfigResource = config.getPuConfigResource();
+		this.numberOfBackups = config.getNumberOfBackups();
+		this.numberOfPrimaries = config.getNumberOfPrimaries();
+		this.contextProperties.putAll(config.getContextProperties());
+		this.beanProperties.putAll(config.getBeanProperties());
+		this.lookupLocator = config.getLookupLocator() != null ? config.getLookupLocator() : JVMGlobalGigaSpacesManager.getLookupLocator();
+		this.autostart = config.isAutostart();
+		this.parentContext = config.getParentContext();
+		this.useAuthentication = config.isUseAuthentication();
+		this.contextProperties.put("spaceName", UniqueSpaceNameLookup.getSpaceNameWithSequence(config.getSpaceName()));
 		this.contextProperties.put("gs.space.url.arg.locators", lookupLocator);
 		this.contextProperties.put("gs.space.url.arg.timeout", "10");
 
@@ -154,7 +154,7 @@ public final class PartitionedPu implements PuRunner {
 	
 	@Override
 	public boolean autostart() {
-		return this.autostart ;
+		return this.autostart;
 	}
 	
 	@Override

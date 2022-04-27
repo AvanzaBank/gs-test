@@ -19,8 +19,6 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 import org.openspaces.core.GigaSpace;
 import org.springframework.context.ApplicationContext;
 
@@ -78,28 +76,6 @@ public class StandaloneRunningPu implements GenericRunningPu {
     }
 
     @Override
-    public Statement apply(final Statement base, Description description) {
-        return new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                try {
-                    if (runner.autostart()) {
-                        start();
-                    }
-                    base.evaluate();
-                } finally {
-                    try {
-                        stop();
-                    } catch (Exception e) {
-                        // Ignore
-                    }
-                }
-            }
-
-        };
-    }
-
-    @Override
     public void close() throws Exception {
         stop();
     }
@@ -139,5 +115,9 @@ public class StandaloneRunningPu implements GenericRunningPu {
         return IntStream.range(0, runner.getNumInstances())
                 .mapToObj(runner::getPrimaryInstanceApplicationContext)
                 .collect(Collectors.toList());
+    }
+
+    protected boolean isAutostart() {
+        return runner.autostart();
     }
 }

@@ -36,13 +36,13 @@ public class MirrorPu implements PuRunner {
 	private final boolean autostart;
 	private final ApplicationContext parentContext;
 	
-	public MirrorPu(AbstractMirrorPuConfigurer config) {
-		this.puXmlPath = config.puXmlPath;
-		this.puConfigResource = config.puConfigResource;
-		this.contextProperties = config.properties;
-		this.lookupLocator = config.lookupLocator != null ? config.lookupLocator : JVMGlobalGigaSpacesManager.getLookupLocator();
+	public MirrorPu(MirrorConfig config) {
+		this.puXmlPath = config.getPuXmlPath();
+		this.puConfigResource = config.getPuConfigResource();
+		this.contextProperties = config.getProperties();
+		this.lookupLocator = config.getLookupLocator() != null ? config.getLookupLocator() : JVMGlobalGigaSpacesManager.getLookupLocator();
 		this.autostart = true;
-		this.parentContext = config.parentContext;
+		this.parentContext = config.getParentContext();
 		this.contextProperties.put("gs.space.url.arg.timeout", "10");
 		this.contextProperties.put("gs.space.url.arg.locators", lookupLocator);
 	}

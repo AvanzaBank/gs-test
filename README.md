@@ -17,7 +17,7 @@ The `RunningPu` extends the `org.junit.rules.TestRule` interface which makes it 
 class FruitTest {
   @Rule
   public RunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
-                                   .configure();
+                                          .configure();
                                    
   // Test cases against fruitPu
 }
@@ -27,8 +27,8 @@ class FruitTest {
 ```java
 class FruitTest {
 
-  RunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
-                                   .configure();
+  StandaloneRunningPu fruitPu = StandalonePuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
+                                                       .configure();
   
   @Before                                 
   public void startFruitPu() {
@@ -54,15 +54,31 @@ In this case, a LUS-based selector will be used.
 
 ## Maven
 
-GS-Test packed as a single jar file. Maven users can get GS-Test using the following coordinates:
+### Core
+
+The core module that contains standalone configuration, without depending on any testing framework.
 
 ```xml
 <dependency>
   <groupId>com.avanza.gs</groupId>
-  <artifactId>gs-test</artifactId>
+  <artifactId>gs-test-core</artifactId>
   <version>2.1.0</version>
 </dependency>
 ``` 
+
+### JUnit4
+
+JUnit4 bindings for running as test rules.
+
+```xml
+<dependency>
+  <groupId>com.avanza.gs</groupId>
+  <artifactId>gs-test-junit4</artifactId>
+  <version>2.1.0</version>
+</dependency>
+``` 
+
+This artifact replaces `com.avanza.gs:gs-test` from pre-`2.1.0` versions of this library.
 
 ## Previous versions
 

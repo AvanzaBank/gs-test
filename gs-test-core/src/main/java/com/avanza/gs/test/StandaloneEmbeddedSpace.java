@@ -17,20 +17,17 @@ package com.avanza.gs.test;
 
 import java.util.UUID;
 
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;
 import org.openspaces.core.space.UrlSpaceConfigurer;
 
-public class StandaloneEmbeddedSpace implements TestRule {
+public class StandaloneEmbeddedSpace {
 
 	private final UrlSpaceConfigurer urlSpaceConfigurer;
 	private final GigaSpace gigaSpace;
 
 	public StandaloneEmbeddedSpace() {
-		this("space-" + UUID.randomUUID().toString());
+		this("space-" + UUID.randomUUID());
 	}
 	
 	public StandaloneEmbeddedSpace(String spaceName) {
@@ -48,26 +45,6 @@ public class StandaloneEmbeddedSpace implements TestRule {
 	
 	public void destroy() {
 		urlSpaceConfigurer.close();
-	}
-
-	@Override
-	public Statement apply(final Statement base, Description description) {
-		return new Statement() {
-			@Override
-			public void evaluate() throws Throwable {
-				try {
-					start();
-					base.evaluate();
-				} finally {
-					try {
-						destroy();
-					} catch (Exception e) {
-						// Ignore
-					}
-				}
-			}
-
-		};
 	}
 
 }

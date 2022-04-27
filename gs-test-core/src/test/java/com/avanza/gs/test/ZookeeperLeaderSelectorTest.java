@@ -34,7 +34,7 @@ public class ZookeeperLeaderSelectorTest {
 
 	@Test
 	public void testZookeeperFailover() throws Exception {
-		try (GenericRunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
+		try (GenericRunningPu fruitPu = StandalonePuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
 				.numberOfPrimaries(1)
 				.numberOfBackups(1)
 				.configure()) {
