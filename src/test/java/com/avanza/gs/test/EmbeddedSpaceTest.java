@@ -73,7 +73,7 @@ public class EmbeddedSpaceTest {
 		assertThat(GigaSpacesTestUtil.getSpaceUrlProperties(embeddedSpace.getGigaSpace()), allOf(
 				hasEntry("schema", "default"),
 				hasEntry("container", "space_container"),
-				hasEntry("groups", JVMGlobalLus.getLookupGroupName()),
+				hasEntry("locators", JVMGlobalGigaSpacesManager.getLookupLocator()),
 				hasEntry("space", "space"),
 				hasEntry("state", "started"),
 				hasEntry("membername", "space_container:space")

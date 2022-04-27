@@ -32,7 +32,7 @@ public class MirrorPu implements PuRunner {
 	private final String puXmlPath;
 	private final Resource puConfigResource;
 	private final Properties contextProperties;
-	private final String lookupGroupName;
+	private final String lookupLocator;
 	private final boolean autostart;
 	private final ApplicationContext parentContext;
 	
@@ -40,11 +40,11 @@ public class MirrorPu implements PuRunner {
 		this.puXmlPath = config.puXmlPath;
 		this.puConfigResource = config.puConfigResource;
 		this.contextProperties = config.properties;
-		this.lookupGroupName = config.lookupGroupName;
+		this.lookupLocator = config.lookupLocator != null ? config.lookupLocator : JVMGlobalGigaSpacesManager.getLookupLocator();
 		this.autostart = true;
 		this.parentContext = config.parentContext;
 		this.contextProperties.put("gs.space.url.arg.timeout", "10");
-		this.contextProperties.put("gs.space.url.arg.groups", lookupGroupName);
+		this.contextProperties.put("gs.space.url.arg.locators", lookupLocator);
 	}
 
 	@Override
@@ -86,8 +86,8 @@ public class MirrorPu implements PuRunner {
 	}
 
 	@Override
-	public String getLookupGroupName() {
-		return this.lookupGroupName;
+	public String getLookupLocator() {
+		return this.lookupLocator;
 	}
 	
 	@Override

@@ -26,7 +26,7 @@ public class MirrorPuConfigurer {
 	Resource puConfigResource;
 	Properties properties = new Properties();
 	ApplicationContext parentContext;
-	String lookupGroupName = JVMGlobalLus.getLookupGroupName();
+	String lookupLocator;
 
 	public MirrorPuConfigurer(String puXmlPath) {
 		this.puXmlPath = puXmlPath;
@@ -45,9 +45,18 @@ public class MirrorPuConfigurer {
 		this.parentContext = parentContext;
 		return this;
 	}
-		
+
+	/**
+	 * @deprecated lookupGroup for multicast is no longer in use and have been replaced by
+	 *             {@link #lookupLocator(String)} for unicast. Calling this method will have no effect.
+	 */
+	@Deprecated
 	public MirrorPuConfigurer lookupGroup(String group) {
-		this.lookupGroupName = group;
+		return this;
+	}
+		
+	public MirrorPuConfigurer lookupLocator(String lookupLocator) {
+		this.lookupLocator = lookupLocator;
 		return this;
 	}
 	

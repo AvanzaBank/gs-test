@@ -24,7 +24,15 @@ public interface PuRunner {
 
 	void shutdown() throws Exception;
 
-	String getLookupGroupName();
+	/**
+	 * @deprecated unicast should be used with {@link #getLookupLocator()} instead.
+	 */
+	@Deprecated
+	default String getLookupGroupName() {
+		throw new UnsupportedOperationException("This method has been removed. See javadoc for details.");
+	}
+
+	String getLookupLocator();
 
 	GigaSpace getClusteredGigaSpace();
 

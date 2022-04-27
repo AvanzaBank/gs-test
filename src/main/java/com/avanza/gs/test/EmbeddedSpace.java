@@ -34,7 +34,8 @@ public class EmbeddedSpace implements TestRule {
 	}
 	
 	public EmbeddedSpace(String spaceName) {
-		this.urlSpaceConfigurer = new UrlSpaceConfigurer("/./" + spaceName).lookupGroups(JVMGlobalLus.getLookupGroupName());
+		this.urlSpaceConfigurer = new UrlSpaceConfigurer("/./" + spaceName)
+				.lookupLocators(JVMGlobalGigaSpacesManager.getLookupLocator());
 		this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer.space()).gigaSpace();
 	}
 	

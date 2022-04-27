@@ -24,15 +24,23 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 
 public interface RunningPu extends TestRule, AutoCloseable  {
-	
+
 	// TODO: Rename to ManagedPu
 
-	String getLookupGroupName();
+	/**
+	 * @deprecated unicast should be used with {@link #getLookupLocator()} instead.
+	 */
+	@Deprecated
+	default String getLookupGroupName() {
+		throw new UnsupportedOperationException("This method has been removed. See javadoc for details.");
+	}
+
+	String getLookupLocator();
 
 	GigaSpace getClusteredGigaSpace();
 
 	void start() throws Exception;
-	
+
 	void stop() throws Exception;
 
 	ApplicationContext getPrimaryInstanceApplicationContext(int partition);

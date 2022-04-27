@@ -15,16 +15,24 @@
  */
 package com.avanza.gs.test;
 
-public final class JVMGlobalLus {
+/**
+ * Keeps a singleton instance of the GigaSpaces Manager used for tests.
+ * <p>
+ * The same instance will be used for all tests, and closed with the JVM in a shutdown hook.
+ */
+public final class JVMGlobalGigaSpacesManager {
 
-	/**
-	 * @deprecated This method has been deprecated, as we have switched to unicast instead of multicast for these tests.
-	 *             Use {@link JVMGlobalGigaSpacesManager#getLookupLocator()} instead.
-	 *             The new method uses unicast instead of multicast, so instead of setting {@code lookupGroups} in space
-	 *             properties, {@code locators} should be set instead.
-	 */
-	@Deprecated
-	public static String getLookupGroupName() {
-		throw new UnsupportedOperationException("This method has been removed. See javadoc for how to migrate to the new method.");
+	private static InMemoryGigaSpacesManager instance;
+
+	private static InMemoryGigaSpacesManager getInstance() {
+		if (instance == null) {
+			instance = new InMemoryGigaSpacesManager();
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> instance.close()));
+		}
+		return instance;
+	}
+
+	public static String getLookupLocator() {
+		return getInstance().getLus().getLocatorAsString();
 	}
 }

@@ -31,7 +31,7 @@ public final class PartitionedPuConfigurer {
 	boolean startAsync = false;
 	Properties contextProperties = new Properties();
 	Map<String, Properties> beanProperies = new HashMap<>();
-	String lookupGroupName = JVMGlobalLus.getLookupGroupName();
+	String lookupLocator;
 	String spaceName = "test-space";
 	public boolean autostart = true;
 	ApplicationContext parentContext;
@@ -70,17 +70,17 @@ public final class PartitionedPuConfigurer {
 		return this;
 	}
 
+	/**
+	 * @deprecated lookupGroup for multicast is no longer in use and have been replaced by
+	 *             {@link #lookupLocator(String)} for unicast. Calling this method will have no effect.
+	 */
+	@Deprecated
 	public PartitionedPuConfigurer lookupGroup(String group) {
-		this.lookupGroupName = group;
 		return this;
 	}
 
-	/**
-	 * @deprecated For backwards compatibility only. Use {@link #lookupGroup(String)} instead
-	 */
-	@Deprecated
-	public PartitionedPuConfigurer groupName(String group) {
-		this.lookupGroupName = group;
+	public PartitionedPuConfigurer lookupLocator(String lookupLocator) {
+		this.lookupLocator = lookupLocator;
 		return this;
 	}
 
