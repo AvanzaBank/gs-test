@@ -40,7 +40,7 @@ public class PuXmlEmulation {
 		}
 	}
 
-	static Resource createPuXmlResource(Class<?> puConfig) {
+	public static Resource createPuXmlResource(Class<?> puConfig) {
 		try (InputStream in = PuXmlEmulation.class.getResourceAsStream("/pu.xml.template")) {
 			String content = StreamUtils.copyToString(in, UTF_8)
 					.replace("##CLASSNAME##", puConfig.getName());

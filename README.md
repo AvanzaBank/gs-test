@@ -8,11 +8,11 @@
 The GS-Test library contains utilities designed to simplify testing of applications implemented using GigaSpaces.
 
 #### Running an embedded Processing Unit
-The `PuConfigurers` class contains factory methods for builders for different types of processing units (partitioned pu, mirror pu).
+The `PuConfigurers`/`StandalonePuConfigurers` classes contains factory methods for builders for different types of processing units (partitioned pu, mirror pu).
 Those can be used to create an embedded processing unit (`RunningPu`).
-The `RunningPu` extends the `org.junit.rules.TestRule` interface which makes it easy to run a processing unit "around" either an entire test class using `@ClassRule`, or around each test case using `@Rule`.
+The `RunningPu` is available as a `@TestRule` for JUnit4 and as an `Extension` for JUnit5.
 
-##### Example: Using @Rule and RunningPu to start/stop a pu around each test case
+##### Example: Using JUnit4 @Rule and RunningPu to start/stop a pu around each test case
 ```java
 class FruitTest {
   @Rule
@@ -23,7 +23,18 @@ class FruitTest {
 }
 ```
 
-##### Example: Starting/stopping a Pu explicitly
+##### Example: Using JUnit5 @RegisterExtension to start/stop a pu around each test case
+```java
+class FruitTest {
+  @RegisterExtension
+  public RunningPu fruitPu = PuConfigurers.partitionedPu("classpath:/fruit-pu.xml")
+                                          .configure();
+                                   
+  // Test cases against fruitPu
+}
+```
+
+##### Example: Starting/stopping a Pu explicitly, without any test framework
 ```java
 class FruitTest {
 
@@ -79,6 +90,18 @@ JUnit4 bindings for running as test rules.
 ``` 
 
 This artifact replaces `com.avanza.gs:gs-test` from pre-`2.1.0` versions of this library.
+
+### JUnit5
+
+JUnit5 extension bindings.
+
+```xml
+<dependency>
+  <groupId>com.avanza.gs</groupId>
+  <artifactId>gs-test-junit5</artifactId>
+  <version>2.1.0</version>
+</dependency>
+```
 
 ## Previous versions
 
