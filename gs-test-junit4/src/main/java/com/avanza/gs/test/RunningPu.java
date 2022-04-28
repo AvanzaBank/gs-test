@@ -22,11 +22,11 @@ import org.junit.runners.model.Statement;
 /**
  * JUnit4 {@code TestRule} implementation of {@code StandaloneRunningPu}.
  * <p>
- * Example usage:
+ * Example usage in a JUnit 4 test class:
  * <pre>
- * {@literal @}Rule
- *  public RunningPu fruitPu = PuConfigurers.partitionedPu("pu.xml")
- *                                          .configure();
+ * &#64;Rule
+ * public RunningPu runningPu = PuConfigurers.partitionedPu("pu.xml")
+ *                                           .configure();
  * </pre>
  */
 public final class RunningPu extends StandaloneRunningPu implements TestRule {

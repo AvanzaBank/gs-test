@@ -24,11 +24,11 @@ import com.avanza.gs.test.StandaloneRunningPu;
 /**
  * JUnit5 {@code @Extension} implementation of {@code StandaloneRunningPu}.
  * <p>
- * Example usage:
+ * Example usage in a JUnit 5 test class:
  * <pre>
- * {@literal @}RegisterExtension
- *  public RunningPu fruitPu = PuConfigurers.partitionedPu("pu.xml")
- *                                          .configure();
+ * &#64;RegisterExtension
+ * RunningPu runningPu = PuConfigurers.partitionedPu("pu.xml")
+ *                                    .configure();
  * </pre>
  */
 public final class RunningPu extends StandaloneRunningPu implements ResourceExtension {
