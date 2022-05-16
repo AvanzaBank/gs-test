@@ -9,6 +9,7 @@
 		<module>gs-test-core</module>
 		<module>gs-test</module>
 		<module>gs-test-junit4</module>
+		<module>gs-test-junit5</module>
 	</modules>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
@@ -136,6 +137,7 @@
 		<spring.version>5.3.7</spring.version>
 		<gigaspaces.version>16.1.0</gigaspaces.version>
 		<junit.version>4.13.2</junit.version>
+		<junit-jupiter.version>5.8.2</junit-jupiter.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<awaitility.version>4.1.0</awaitility.version>
 		<slf4j.version>1.7.32</slf4j.version>
@@ -233,6 +235,13 @@
 						<artifactId>hamcrest-core</artifactId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit-jupiter.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
 			</dependency>
 			<dependency>
 				<groupId>org.hamcrest</groupId>
