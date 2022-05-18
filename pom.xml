@@ -145,13 +145,13 @@
 		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
 
-		<spring.version>5.3.7</spring.version>
-		<gigaspaces.version>16.1.0</gigaspaces.version>
+		<spring.version>5.3.19</spring.version>
+		<gigaspaces.version>16.1.1</gigaspaces.version>
 		<junit.version>4.13.2</junit.version>
 		<junit-jupiter.version>5.8.2</junit-jupiter.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<awaitility.version>4.1.0</awaitility.version>
-		<slf4j.version>1.7.32</slf4j.version>
+		<slf4j.version>1.7.36</slf4j.version>
 		<log4j.version>2.17.2</log4j.version>
 
 		<!-- same versions that are used by GigaSpaces -->
