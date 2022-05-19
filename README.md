@@ -73,7 +73,7 @@ The core module that contains standalone configuration, without depending on any
 <dependency>
   <groupId>com.avanza.gs</groupId>
   <artifactId>gs-test-core</artifactId>
-  <version>2.1.0</version>
+  <version>2.1.x</version>
 </dependency>
 ``` 
 
@@ -85,7 +85,7 @@ JUnit4 bindings for running as test rules.
 <dependency>
   <groupId>com.avanza.gs</groupId>
   <artifactId>gs-test-junit4</artifactId>
-  <version>2.1.0</version>
+  <version>2.1.x</version>
 </dependency>
 ``` 
 
@@ -99,7 +99,7 @@ JUnit5 extension bindings.
 <dependency>
   <groupId>com.avanza.gs</groupId>
   <artifactId>gs-test-junit5</artifactId>
-  <version>2.1.0</version>
+  <version>2.1.x</version>
 </dependency>
 ```
 
