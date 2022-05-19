@@ -17,6 +17,12 @@
 		<dependency>
 			<groupId>org.apache.curator</groupId>
 			<artifactId>curator-test</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.jupiter</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.gigaspaces</groupId>
@@ -106,6 +112,12 @@
 		<dependency>
 			<groupId>org.openspaces</groupId>
 			<artifactId>xap-zookeeper</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -149,6 +161,7 @@
 								<bannedDependencies>
 									<excludes>
 										<exclude>*junit*</exclude>
+										<exclude>com.google.guava:*</exclude>
 									</excludes>
 									<includes>
 										<!-- junit is only allowed in test scope for this module -->

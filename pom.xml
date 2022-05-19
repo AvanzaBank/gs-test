@@ -154,9 +154,9 @@
 		<slf4j.version>1.7.36</slf4j.version>
 		<log4j.version>2.17.2</log4j.version>
 
-		<!-- same versions that are used by GigaSpaces -->
-		<zookeeper.version>3.5.8</zookeeper.version>
-		<curator.version>5.1.0</curator.version>
+		<!-- this lib uses later versions of ZooKeeper & Curator than GigaSpaces -->
+		<zookeeper.version>3.8.0</zookeeper.version>
+		<curator.version>5.2.1</curator.version>
 	</properties>
 
 	<dependencyManagement>
@@ -197,6 +197,21 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.curator</groupId>
+				<artifactId>curator-client</artifactId>
+				<version>${curator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.curator</groupId>
+				<artifactId>curator-framework</artifactId>
+				<version>${curator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.curator</groupId>
+				<artifactId>curator-recipes</artifactId>
+				<version>${curator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.curator</groupId>
 				<artifactId>curator-test</artifactId>
 				<version>${curator.version}</version>
 				<exclusions>
@@ -212,8 +227,8 @@
 				<version>${zookeeper.version}</version>
 				<exclusions>
 					<exclusion>
-						<groupId>log4j</groupId>
-						<artifactId>log4j</artifactId>
+						<groupId>ch.qos.logback</groupId>
+						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
