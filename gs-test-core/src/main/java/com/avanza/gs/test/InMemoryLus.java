@@ -57,9 +57,11 @@ final class InMemoryLus implements AutoCloseable {
 	}
 
 	private static void setLusSystemProperties() {
-		// Use a random port for local LUS
-		int randomPort = getRandomPort();
-		System.setProperty("com.sun.jini.reggie.initialUnicastDiscoveryPort", Integer.toString(randomPort));
+		if (System.getProperty("com.sun.jini.reggie.initialUnicastDiscoveryPort") == null) {
+			// Use a random port for local LUS
+			int randomPort = getRandomPort();
+			System.setProperty("com.sun.jini.reggie.initialUnicastDiscoveryPort", Integer.toString(randomPort));
+		}
 		// Disable multicast
 		System.setProperty("com.gs.multicast.enabled", "false");
 	}
