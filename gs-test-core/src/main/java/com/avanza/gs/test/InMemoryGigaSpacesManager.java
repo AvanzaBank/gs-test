@@ -17,10 +17,17 @@ package com.avanza.gs.test;
 
 import static com.gigaspaces.start.SystemInfo.LOOKUP_LOCATORS_SYS_PROP;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.gigaspaces.CommonSystemProperties;
 
 /**
  * This is intended to simulate an in-memory version of GigaSpaces Manager, and starts the following components:
@@ -41,8 +48,10 @@ final class InMemoryGigaSpacesManager implements AutoCloseable {
 
 	private final InMemoryZooKeeper zooKeeper;
 	private final InMemoryLus lus;
+	private final Path gsHome;
 
 	public InMemoryGigaSpacesManager() {
+		this.gsHome = setupGsHome();
 		if (shouldStartZooKeeper()) {
 			this.zooKeeper = new InMemoryZooKeeper();
 			setGigaSpacesManagerProperties(zooKeeper.getZooKeeperConfig());
@@ -58,6 +67,24 @@ final class InMemoryGigaSpacesManager implements AutoCloseable {
 
 	private static boolean shouldStartZooKeeper() {
 		return !Boolean.getBoolean(DISABLE_ZOOKEEPER_PROPERTY);
+	}
+
+	/**
+	 * Sets up temporary GS_HOME in order to avoid files being created in project directory during tests.
+	 * If GS_HOME property is already set prior to this initialization, nothing will be done and cleanup will be left to
+	 * the external source.
+	 */
+	private Path setupGsHome() {
+		if (System.getProperty(CommonSystemProperties.GS_HOME) != null) {
+			return null;
+		}
+		try {
+			Path tmpPath = Files.createTempDirectory(getClass().getSimpleName());
+			System.setProperty(CommonSystemProperties.GS_HOME, tmpPath.toString());
+			return tmpPath;
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
 	}
 
 	private static void setGigaSpacesManagerProperties(Path zooKeeperConfig) {
@@ -92,6 +119,21 @@ final class InMemoryGigaSpacesManager implements AutoCloseable {
 				zooKeeper.close();
 			} catch (Exception e) {
 				LOG.warn("Error while closing ZooKeeper server", e);
+			}
+		}
+		// Delete temporary GS_HOME
+		if (gsHome != null) {
+			try (Stream<Path> s = Files.walk(gsHome)) {
+				s.sorted(Comparator.reverseOrder())
+						.forEach(p -> {
+							try {
+								Files.delete(p);
+							} catch (IOException e) {
+								throw new UncheckedIOException("Failed to delete " + p, e);
+							}
+						});
+			} catch (Exception e) {
+				LOG.warn("Failed deleting GS_HOME at {}", gsHome, e);
 			}
 		}
 	}
