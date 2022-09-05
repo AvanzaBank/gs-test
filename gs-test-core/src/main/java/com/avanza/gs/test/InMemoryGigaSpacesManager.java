@@ -15,6 +15,8 @@
  */
 package com.avanza.gs.test;
 
+import static com.gigaspaces.start.SystemInfo.LOOKUP_LOCATORS_SYS_PROP;
+
 import java.nio.file.Path;
 
 import org.slf4j.Logger;
@@ -66,6 +68,16 @@ final class InMemoryGigaSpacesManager implements AutoCloseable {
 		// Disable reporting to HSQLDB
 		System.setProperty("com.gs.hsqldb.all-metrics-recording.enabled", "false");
 		System.setProperty("com.gs.ops-ui.enabled", "false");
+
+		String lookupLocators = System.getProperty(LOOKUP_LOCATORS_SYS_PROP);
+		if (lookupLocators != null) {
+			// this property being set prior to the test causes constructor in
+			// com.gigaspaces.start.SystemInfo.XapLookup to throw an IllegalStateException
+			LOG.info("System property \"{}={}\" was set, this causes issues during test initialization combined with "
+							+ "GigaSpaces Manager properties. Clearing ...",
+					LOOKUP_LOCATORS_SYS_PROP, lookupLocators);
+			System.clearProperty(LOOKUP_LOCATORS_SYS_PROP);
+		}
 	}
 
 	@Override
