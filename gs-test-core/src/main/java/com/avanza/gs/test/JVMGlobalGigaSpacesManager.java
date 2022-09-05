@@ -22,12 +22,16 @@ package com.avanza.gs.test;
  */
 public final class JVMGlobalGigaSpacesManager {
 
-	private static InMemoryGigaSpacesManager instance;
+	private static volatile InMemoryGigaSpacesManager instance;
 
 	private static InMemoryGigaSpacesManager getInstance() {
 		if (instance == null) {
-			instance = new InMemoryGigaSpacesManager();
-			Runtime.getRuntime().addShutdownHook(new Thread(() -> instance.close()));
+			synchronized (JVMGlobalGigaSpacesManager.class) {
+				if (instance == null) {
+					instance = new InMemoryGigaSpacesManager();
+					Runtime.getRuntime().addShutdownHook(new Thread(() -> instance.close()));
+				}
+			}
 		}
 		return instance;
 	}
