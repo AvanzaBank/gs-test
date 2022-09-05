@@ -71,6 +71,8 @@ final class InMemoryGigaSpacesManager implements AutoCloseable {
 
 	/**
 	 * Sets up temporary GS_HOME in order to avoid files being created in project directory during tests.
+	 * If GS_HOME property is already set prior to this initialization, nothing will be done and cleanup will be left to
+	 * the external source.
 	 */
 	private Path setupGsHome() {
 		if (System.getProperty(CommonSystemProperties.GS_HOME) != null) {
