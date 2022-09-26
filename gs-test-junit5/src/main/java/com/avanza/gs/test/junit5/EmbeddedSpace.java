@@ -36,6 +36,12 @@ public final class EmbeddedSpace extends StandaloneEmbeddedSpace implements Reso
 	}
 
 	@Override
+	public EmbeddedSpace withLookupLocators(String... lookupLocators) {
+		super.withLookupLocators(lookupLocators);
+		return this;
+	}
+
+	@Override
 	public void before() {
 		start();
 	}

@@ -24,7 +24,7 @@ import org.openspaces.core.space.UrlSpaceConfigurer;
 public class StandaloneEmbeddedSpace {
 
 	private final UrlSpaceConfigurer urlSpaceConfigurer;
-	private final GigaSpace gigaSpace;
+	private GigaSpace gigaSpace;
 
 	public StandaloneEmbeddedSpace() {
 		this("space-" + UUID.randomUUID());
@@ -33,14 +33,22 @@ public class StandaloneEmbeddedSpace {
 	public StandaloneEmbeddedSpace(String spaceName) {
 		this.urlSpaceConfigurer = new UrlSpaceConfigurer("/./" + spaceName)
 				.lookupLocators(JVMGlobalGigaSpacesManager.getLookupLocator());
-		this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer.space()).gigaSpace();
+	}
+
+	public StandaloneEmbeddedSpace withLookupLocators(String... lookupLocators) {
+		this.urlSpaceConfigurer.lookupLocators(lookupLocators);
+		return this;
 	}
 	
 	public GigaSpace getGigaSpace() {
+		if (gigaSpace == null) {
+			start();
+		}
 		return gigaSpace;
 	}
 	
-	public void start() {		
+	public void start() {
+		this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer.space()).gigaSpace();
 	}
 	
 	public void destroy() {

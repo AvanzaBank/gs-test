@@ -33,6 +33,12 @@ public final class EmbeddedSpace extends StandaloneEmbeddedSpace implements Test
 	}
 
 	@Override
+	public EmbeddedSpace withLookupLocators(String... lookupLocators) {
+		super.withLookupLocators(lookupLocators);
+		return this;
+	}
+
+	@Override
 	public Statement apply(final Statement base, Description description) {
 		return new Statement() {
 			@Override

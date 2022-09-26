@@ -15,6 +15,10 @@
  */
 package com.avanza.gs.test;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Keeps a singleton instance of the GigaSpaces Manager used for tests.
  * <p>
@@ -36,7 +40,20 @@ public final class JVMGlobalGigaSpacesManager {
 		return instance;
 	}
 
+	private static Optional<String> getConfiguredGsManagerLookupLocators() {
+		if (System.getProperty("com.gs.manager.servers") != null) {
+			int port = Integer.parseInt(System.getProperty("com.sun.jini.reggie.initialUnicastDiscoveryPort", "4174"));
+			return Optional.of(Stream.of(System.getProperty("com.gs.manager.servers").split(","))
+					.map(server -> server.replace("localhost", "127.0.0.1") + ":" + port)
+					.distinct()
+					.sorted()
+					.collect(Collectors.joining(",")));
+		}
+		return Optional.empty();
+	}
+
 	public static String getLookupLocator() {
-		return getInstance().getLus().getLocatorAsString();
+		return getConfiguredGsManagerLookupLocators()
+				.orElseGet(() -> getInstance().getLus().getLocatorAsString());
 	}
 }
