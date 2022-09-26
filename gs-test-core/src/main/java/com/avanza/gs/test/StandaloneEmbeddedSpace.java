@@ -25,18 +25,18 @@ public class StandaloneEmbeddedSpace {
 
 	private final UrlSpaceConfigurer urlSpaceConfigurer;
 	private GigaSpace gigaSpace;
+	private String lookupLocator;
 
 	public StandaloneEmbeddedSpace() {
 		this("space-" + UUID.randomUUID());
 	}
 	
 	public StandaloneEmbeddedSpace(String spaceName) {
-		this.urlSpaceConfigurer = new UrlSpaceConfigurer("/./" + spaceName)
-				.lookupLocators(JVMGlobalGigaSpacesManager.getLookupLocator());
+		this.urlSpaceConfigurer = new UrlSpaceConfigurer("/./" + spaceName);
 	}
 
-	public StandaloneEmbeddedSpace withLookupLocators(String... lookupLocators) {
-		this.urlSpaceConfigurer.lookupLocators(lookupLocators);
+	public StandaloneEmbeddedSpace withLookupLocator(String lookupLocator) {
+		this.lookupLocator = lookupLocator;
 		return this;
 	}
 	
@@ -48,7 +48,10 @@ public class StandaloneEmbeddedSpace {
 	}
 	
 	public void start() {
-		this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer.space()).gigaSpace();
+		String lookupLocator = this.lookupLocator != null ? this.lookupLocator :  JVMGlobalGigaSpacesManager.getLookupLocator();
+		this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer
+				.lookupLocators(lookupLocator)
+				.space()).gigaSpace();
 	}
 	
 	public void destroy() {
