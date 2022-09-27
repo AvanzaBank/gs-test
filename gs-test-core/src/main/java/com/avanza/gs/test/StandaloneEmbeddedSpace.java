@@ -48,10 +48,12 @@ public class StandaloneEmbeddedSpace {
 	}
 	
 	public void start() {
-		String lookupLocator = this.lookupLocator != null ? this.lookupLocator :  JVMGlobalGigaSpacesManager.getLookupLocator();
-		this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer
-				.lookupLocators(lookupLocator)
-				.space()).gigaSpace();
+		if (this.gigaSpace == null) {
+			String lookupLocator = this.lookupLocator != null ? this.lookupLocator :  JVMGlobalGigaSpacesManager.getLookupLocator();
+			this.gigaSpace = new GigaSpaceConfigurer(urlSpaceConfigurer
+					.lookupLocators(lookupLocator)
+					.space()).gigaSpace();
+		}
 	}
 	
 	public void destroy() {
