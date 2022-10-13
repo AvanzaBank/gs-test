@@ -146,7 +146,7 @@
 		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
 
 		<spring-boot.version>2.6.7</spring-boot.version>
-		<gigaspaces.version>16.1.1</gigaspaces.version>
+		<gigaspaces.version>16.2.0-patch-L-1</gigaspaces.version>
 
 		<!-- this lib uses later versions of ZooKeeper & Curator than GigaSpaces -->
 		<zookeeper.version>3.8.0</zookeeper.version>
