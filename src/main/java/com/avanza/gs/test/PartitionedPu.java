@@ -42,7 +42,7 @@ public final class PartitionedPu implements PuRunner {
 	private final Integer numberOfPrimaries;
 	private final Integer numberOfBackups;
 	private final Properties contextProperties = new Properties();
-	private final Map<String, Properties> beanProperies = new HashMap<>();
+	private final Map<String, Properties> beanProperties = new HashMap<>();
 	private final String lookupGroupName;
 	private final boolean autostart;
 	private final ApplicationContext parentContext;
@@ -53,7 +53,7 @@ public final class PartitionedPu implements PuRunner {
 		this.numberOfBackups = configurer.numberOfBackups;
 		this.numberOfPrimaries = configurer.numberOfPrimaries;
 		this.contextProperties.putAll(configurer.contextProperties);
-		this.beanProperies.putAll(configurer.beanProperies);
+		this.beanProperties.putAll(configurer.beanProperties);
 		this.lookupGroupName = configurer.lookupGroupName;
 		this.autostart = configurer.autostart;
 		this.parentContext = configurer.parentContext;
@@ -115,7 +115,7 @@ public final class PartitionedPu implements PuRunner {
 	private BeanLevelProperties createBeanLevelProperties() {
 		BeanLevelProperties beanLevelProperties = new BeanLevelProperties();
 		beanLevelProperties.setContextProperties(contextProperties);
-		for (Map.Entry<String, Properties> beanProperties : beanProperies.entrySet()) {
+		for (Map.Entry<String, Properties> beanProperties : beanProperties.entrySet()) {
 			beanLevelProperties.setBeanProperties(beanProperties.getKey(), beanProperties.getValue());
 		}
 		return beanLevelProperties;
