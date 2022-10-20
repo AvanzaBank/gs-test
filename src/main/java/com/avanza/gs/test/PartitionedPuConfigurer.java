@@ -28,7 +28,7 @@ public final class PartitionedPuConfigurer {
 	int numberOfBackups = 0;
 	boolean startAsync = false;
 	Properties contextProperties = new Properties();
-	Map<String, Properties> beanProperies = new HashMap<>();
+	Map<String, Properties> beanProperties = new HashMap<>();
 	String lookupGroupName = JVMGlobalLus.getLookupGroupName();
 	String spaceName = "test-space";
 	public boolean autostart = true;
@@ -55,7 +55,7 @@ public final class PartitionedPuConfigurer {
 	}
 
 	public PartitionedPuConfigurer beanProperties(String beanName, Properties beanProperties) {
-		this.beanProperies.put(beanName, beanProperties);
+		this.beanProperties.put(beanName, beanProperties);
 		return this;
 	}
 
@@ -85,11 +85,21 @@ public final class PartitionedPuConfigurer {
 		return new RunningPuImpl(new PartitionedPu(this));
 	}
 
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
 	public PartitionedPuConfigurer contextProperties(Properties properties) {
 		this.contextProperties = properties;
 		return this;
 	}
-	
+
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
 	public PartitionedPuConfigurer contextProperties(ContextProperties properties) {
 		this.contextProperties = properties.getProperties();
 		return this;
