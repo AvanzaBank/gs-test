@@ -28,7 +28,7 @@ public final class PartitionedPuConfigurer {
 	int numberOfBackups = 0;
 	boolean startAsync = false;
 	Properties contextProperties = new Properties();
-	Map<String, Properties> beanProperies = new HashMap<>();
+	Map<String, Properties> beanProperties = new HashMap<>();
 	String lookupGroupName = JVMGlobalLus.getLookupGroupName();
 	String spaceName = "test-space";
 	public boolean autostart = true;
@@ -55,7 +55,7 @@ public final class PartitionedPuConfigurer {
 	}
 
 	public PartitionedPuConfigurer beanProperties(String beanName, Properties beanProperties) {
-		this.beanProperies.put(beanName, beanProperties);
+		this.beanProperties.put(beanName, beanProperties);
 		return this;
 	}
 
