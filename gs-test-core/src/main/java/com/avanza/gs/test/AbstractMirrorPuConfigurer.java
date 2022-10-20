@@ -24,7 +24,7 @@ public abstract class AbstractMirrorPuConfigurer<T extends AbstractMirrorPuConfi
 
 	private final String puXmlPath;
 	private final Resource puConfigResource;
-	private final Properties properties = new Properties();
+	private Properties properties = new Properties();
 	private ApplicationContext parentContext;
 	private String lookupLocator;
 
@@ -36,6 +36,26 @@ public abstract class AbstractMirrorPuConfigurer<T extends AbstractMirrorPuConfi
 	public AbstractMirrorPuConfigurer(Resource puConfigResource) {
 		this.puXmlPath = null;
 		this.puConfigResource = puConfigResource;
+	}
+
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
+	public T contextProperties(Properties properties) {
+		this.properties = properties;
+		return me();
+	}
+
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
+	public T contextProperties(ContextProperties properties) {
+		this.properties = properties.getProperties();
+		return me();
 	}
 
 	public T contextProperty(String propertyName, String propertyValue) {

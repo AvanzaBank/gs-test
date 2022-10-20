@@ -95,11 +95,21 @@ public abstract class AbstractPartitionedPuConfigurer<T extends AbstractPartitio
 		return new PartitionedPu(this);
 	}
 
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
 	public T contextProperties(Properties properties) {
 		this.contextProperties = properties;
 		return me();
 	}
-	
+
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
 	public T contextProperties(ContextProperties properties) {
 		this.contextProperties = properties.getProperties();
 		return me();
