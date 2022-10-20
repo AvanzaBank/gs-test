@@ -30,6 +30,16 @@ public class MirrorPuConfigurer {
 		this.puXmlPath = puXmlPath;
 	}
 
+	public MirrorPuConfigurer contextProperties(Properties properties) {
+		this.properties = properties;
+		return this;
+	}
+
+	public MirrorPuConfigurer contextProperties(ContextProperties properties) {
+		this.properties = properties.getProperties();
+		return this;
+	}
+
 	public MirrorPuConfigurer contextProperty(String propertyName, String propertyValue) {
 		this.properties.setProperty(propertyName, propertyValue);
 		return this;

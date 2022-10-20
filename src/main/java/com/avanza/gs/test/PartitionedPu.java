@@ -53,7 +53,7 @@ public final class PartitionedPu implements PuRunner {
 		this.numberOfBackups = configurer.numberOfBackups;
 		this.numberOfPrimaries = configurer.numberOfPrimaries;
 		this.contextProperties.putAll(configurer.contextProperties);
-		this.beanProperies.putAll(configurer.beanProperies);
+		this.beanProperies.putAll(configurer.beanProperties);
 		this.lookupGroupName = configurer.lookupGroupName;
 		this.autostart = configurer.autostart;
 		this.parentContext = configurer.parentContext;
