@@ -85,11 +85,21 @@ public final class PartitionedPuConfigurer {
 		return new RunningPuImpl(new PartitionedPu(this));
 	}
 
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
 	public PartitionedPuConfigurer contextProperties(Properties properties) {
 		this.contextProperties = properties;
 		return this;
 	}
-	
+
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
 	public PartitionedPuConfigurer contextProperties(ContextProperties properties) {
 		this.contextProperties = properties.getProperties();
 		return this;
