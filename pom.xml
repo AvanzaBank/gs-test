@@ -4,7 +4,7 @@
 	<groupId>com.avanza.gs</groupId>
 	<artifactId>gs-test-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>2.1.5-SNAPSHOT</version>
+	<version>2.1.6-SNAPSHOT</version>
 	<modules>
 		<module>gs-test-core</module>
 		<module>gs-test</module>
