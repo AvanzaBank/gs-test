@@ -24,7 +24,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.space.UrlSpaceFactoryBean;
@@ -33,7 +32,7 @@ import com.gigaspaces.annotation.pojo.SpaceId;
 import com.gigaspaces.annotation.pojo.SpaceRouting;
 import com.j_spaces.core.IJSpace;
 
-@Ignore("requires a valid gs license to be set with -Dcom.gs.licensekey to run")
+@Deprecated
 public class PartitionedSpaceTest {
 
 	private static final String SPACE_NAME = "the_space_name";
