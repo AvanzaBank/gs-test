@@ -17,6 +17,8 @@ package com.avanza.gs.test;
 
 import static com.avanza.gs.test.PuXmlEmulation.createPuXmlConf;
 
+import org.springframework.core.io.Resource;
+
 public class PuConfigurers {
 
 	public static PartitionedPuConfigurer partitionedPu(String puXmlPath) {
@@ -27,11 +29,19 @@ public class PuConfigurers {
 		return partitionedPu(createPuXmlConf(puConfig).toUri().toString());
 	}
 
+	public static PartitionedPuConfigurer partitionedPu(Resource puConfigResource) {
+		return new PartitionedPuConfigurer(puConfigResource);
+	}
+
 	public static MirrorPuConfigurer mirrorPu(String puXmlPath) {
 		return new MirrorPuConfigurer(puXmlPath);
 	}
 
 	public static MirrorPuConfigurer mirrorPu(Class<?> mirrorConfig) {
 		return mirrorPu(createPuXmlConf(mirrorConfig).toUri().toString());
+	}
+
+	public static MirrorPuConfigurer mirrorPu(Resource puConfigResource) {
+		return new MirrorPuConfigurer(puConfigResource);
 	}
 }

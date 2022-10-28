@@ -18,16 +18,44 @@ package com.avanza.gs.test;
 import java.util.Properties;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 
 public class MirrorPuConfigurer {
 	
 	final String puXmlPath;
+	final Resource puConfigResource;
 	Properties properties = new Properties();
 	ApplicationContext parentContext;
 	String lookupGroupName = JVMGlobalLus.getLookupGroupName();
 
 	public MirrorPuConfigurer(String puXmlPath) {
 		this.puXmlPath = puXmlPath;
+		this.puConfigResource = null;
+	}
+
+	public MirrorPuConfigurer(Resource puConfigResource) {
+		this.puXmlPath = null;
+		this.puConfigResource = puConfigResource;
+	}
+
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
+	public MirrorPuConfigurer contextProperties(Properties properties) {
+		this.properties = properties;
+		return this;
+	}
+
+	/**
+	 * @deprecated Use {@link #contextProperty(String, String)} instead.
+	 * E.g. {@code .contextProperty("configSourceId", serviceRegistry.getConfigSourceId())) }
+	 */
+	@Deprecated
+	public MirrorPuConfigurer contextProperties(ContextProperties properties) {
+		this.properties = properties.getProperties();
+		return this;
 	}
 
 	/**
