@@ -32,11 +32,16 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.util.StreamUtils;
 
 /**
- * Utility class to create an in memory partitioned space without backups.
+ * Utility class to create a partitioned space without backups.
  * <p>
- * Individual primary instances can be retrieved by using the partition(ID) method. An url to the
- * cluster can be retrieved through the getUrl() method.
+ * Individual primary instances can be retrieved by using the {@code partition(ID)} method. An url to the
+ * cluster can be retrieved through the {@code getUrl()} method.
+ *
+ * @deprecated This class is provided for backwards compatibility.
+ * For a simple test with no need for partitions, {@link EmbeddedSpace} can be used instead.
+ * For more complex tests, use {@link PuConfigurers} to set up a {@code partitionedPu}.
  */
+@Deprecated
 public class PartitionedSpace implements TestRule {
 
 	private final GigaSpace[] instances;
@@ -123,7 +128,7 @@ public class PartitionedSpace implements TestRule {
 
 	@Deprecated
 	protected void configure(UrlSpaceConfigurer spaceConfigurer) {
-		throw new UnsupportedOperationException("This method is not implemented");
+		throw new UnsupportedOperationException("This method is not supported");
 	}
 
 	/**
