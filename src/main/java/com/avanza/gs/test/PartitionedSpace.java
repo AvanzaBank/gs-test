@@ -42,10 +42,11 @@ public class PartitionedSpace implements TestRule {
 	private final GigaSpace[] instances;
 	private final RunningPu partitionedPu;
 	private final Path puXml;
-
 	private final String spaceName;
 	private final String groupName;
 	private final int numberOfPartitions;
+
+	private boolean started = false;
 
 	/**
 	 * Creates a partitioned space with a given number of partitions.
@@ -105,6 +106,9 @@ public class PartitionedSpace implements TestRule {
 	}
 
 	public void start() {
+		if (started) {
+			return;
+		}
 		try {
 			partitionedPu.start();
 		} catch (Exception e) {
@@ -114,6 +118,7 @@ public class PartitionedSpace implements TestRule {
 			instances[instanceId - 1] = partitionedPu.getPrimaryInstanceApplicationContext(instanceId - 1)
 					.getBean(GigaSpace.class);
 		}
+		started = true;
 	}
 
 	@Deprecated

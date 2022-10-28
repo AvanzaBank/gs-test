@@ -15,35 +15,35 @@
  */
 package com.avanza.gs.test;
 
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openspaces.core.GigaSpace;
+import org.openspaces.core.space.UrlSpaceFactoryBean;
 
 import com.gigaspaces.annotation.pojo.SpaceId;
 import com.gigaspaces.annotation.pojo.SpaceRouting;
+import com.j_spaces.core.IJSpace;
 
 @Ignore("requires a valid gs license to be set with -Dcom.gs.licensekey to run")
 public class PartitionedSpaceTest {
 
 	private static final String SPACE_NAME = "the_space_name";
 
-	private static PartitionedSpace space;
+	@ClassRule
+	public static final PartitionedSpace space = new PartitionedSpace(2, SPACE_NAME);
 
 	private GigaSpace clustered;
 	private GigaSpace partition1;
 	private GigaSpace partition2;
-
-	@BeforeClass
-	public static void createSpace() {
-		space = new PartitionedSpace(2, SPACE_NAME);
-	}
 
 	@Before
 	public void setup() {
@@ -61,7 +61,6 @@ public class PartitionedSpaceTest {
 	public static void destroySpace() {
 		space.destroy();
 	}
-
 
 	@Test
 	public void writeToPartition1() {
@@ -122,6 +121,14 @@ public class PartitionedSpaceTest {
 	@Test
 	public void lookupGroupname() {
 		assertNotNull(space.getLookupGroupName());
+	}
+
+	@Test
+	public void connectToSpaceWithUrl() {
+		UrlSpaceFactoryBean urlSpaceFactoryBean = new UrlSpaceFactoryBean(space.getUrl());
+		urlSpaceFactoryBean.afterPropertiesSet();
+		IJSpace obj = (IJSpace) urlSpaceFactoryBean.getObject();
+		assertThat(obj.getContainerName(), startsWith(SPACE_NAME));
 	}
 
 	private Message createMessage(String message, int routingId) {
