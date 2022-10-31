@@ -56,11 +56,6 @@ public class PartitionedSpaceTest {
 		space.clean();
 	}
 
-	@AfterClass
-	public static void destroySpace() {
-		space.destroy();
-	}
-
 	@Test
 	public void writeToPartition1() {
 		assertEquals("expected space to be empty before insert", 0, clustered.count(null));
