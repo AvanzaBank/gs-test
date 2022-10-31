@@ -20,6 +20,7 @@ import org.openspaces.core.properties.BeanLevelProperties;
 import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainer;
 import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainerProvider;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -29,6 +30,7 @@ public class MirrorPu implements PuRunner {
 	private IntegratedProcessingUnitContainer container;
 	private final String gigaSpaceBeanName = "gigaSpace";
 	private final String puXmlPath;
+	private final Resource puConfigResource;
 	private Properties contextProperties = new Properties();
 	private final String lookupGroupName;
 	private final boolean autostart;
@@ -36,6 +38,7 @@ public class MirrorPu implements PuRunner {
 	
 	public MirrorPu(MirrorPuConfigurer config) {
 		this.puXmlPath = config.puXmlPath;
+		this.puConfigResource = config.puConfigResource;
 		this.contextProperties = config.properties;
 		this.lookupGroupName = config.lookupGroupName;
 		this.autostart = true;
@@ -56,7 +59,12 @@ public class MirrorPu implements PuRunner {
 	private void startContainers() throws IOException {
 		IntegratedProcessingUnitContainerProvider provider = new IntegratedProcessingUnitContainerProvider();
 		provider.setBeanLevelProperties(createBeanLevelProperties());
-		provider.addConfigLocation(puXmlPath);
+		if (puXmlPath != null) {
+			provider.addConfigLocation(puXmlPath);
+		}
+		if (puConfigResource != null) {
+			provider.addConfigLocation(puConfigResource);
+		}
 		if (parentContext != null) {
 			provider.setParentContext(parentContext);
 		}

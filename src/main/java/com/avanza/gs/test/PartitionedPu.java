@@ -27,6 +27,8 @@ import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainer;
 import org.openspaces.pu.container.integrated.IntegratedProcessingUnitContainerProvider;
 import org.openspaces.pu.container.support.CompoundProcessingUnitContainer;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+
 import com.gigaspaces.security.directory.DefaultCredentialsProvider;
 
 /**
@@ -39,6 +41,7 @@ public final class PartitionedPu implements PuRunner {
 	private CompoundProcessingUnitContainer container;
 	private final String gigaSpaceBeanName = "gigaSpace";
 	private final String puXmlPath;
+	private final Resource puConfigResource;
 	private final Integer numberOfPrimaries;
 	private final Integer numberOfBackups;
 	private final Properties contextProperties = new Properties();
@@ -50,6 +53,7 @@ public final class PartitionedPu implements PuRunner {
 
 	public PartitionedPu(PartitionedPuConfigurer configurer) {
 		this.puXmlPath = configurer.puXmlPath;
+		this.puConfigResource = configurer.puConfigResource;
 		this.numberOfBackups = configurer.numberOfBackups;
 		this.numberOfPrimaries = configurer.numberOfPrimaries;
 		this.contextProperties.putAll(configurer.contextProperties);
@@ -76,7 +80,12 @@ public final class PartitionedPu implements PuRunner {
 		IntegratedProcessingUnitContainerProvider provider = new IntegratedProcessingUnitContainerProvider();
 		provider.setBeanLevelProperties(createBeanLevelProperties());
 		provider.setClusterInfo(createClusterInfo());
-		provider.addConfigLocation(puXmlPath);
+		if (puXmlPath != null) {
+			provider.addConfigLocation(puXmlPath);
+		}
+		if (puConfigResource != null) {
+			provider.addConfigLocation(puConfigResource);
+		}
 		if (parentContext != null) {
 			provider.setParentContext(parentContext);
 		}
