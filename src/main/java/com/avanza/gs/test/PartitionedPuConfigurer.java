@@ -20,10 +20,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 
 public final class PartitionedPuConfigurer {
 	
-	String puXmlPath;
+	final String puXmlPath;
+	final Resource puConfigResource;
 	int numberOfPrimaries = 1;
 	int numberOfBackups = 0;
 	boolean startAsync = false;
@@ -37,6 +39,12 @@ public final class PartitionedPuConfigurer {
 
 	public PartitionedPuConfigurer(String puXmlPath) {
 		this.puXmlPath = puXmlPath;
+		this.puConfigResource = null;
+	}
+
+	public PartitionedPuConfigurer(Resource puConfigResource) {
+		this.puXmlPath = null;
+		this.puConfigResource = puConfigResource;
 	}
 	
 	public PartitionedPuConfigurer parentContext(ApplicationContext parentContext) {
