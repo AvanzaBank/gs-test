@@ -23,8 +23,8 @@ import org.openspaces.core.GigaSpace;
 
 import com.avanza.gs.test.junit5.helpers.FruitPojo;
 
-@ExtendWith(GigaspaceExtension.class)
-class GigaspaceExtensionTest {
+@ExtendWith(EmbeddedSpace.class)
+class EmbeddedSpaceAsExtensionTest {
 
 	@Test
 	void testPersistingAndReading(GigaSpace gigaSpace) {

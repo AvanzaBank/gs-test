@@ -58,7 +58,7 @@ class FruitTest {
 
 #### Running an Embedded Gigaspace
 
-In case you only need access to gigaspace, you can use the ``EmbeddedSpace`` class in Junit 4 or the ``GigaspaceExtension`` for Junit 5:
+In case you only need access to gigaspace, you can use the ``EmbeddedSpace`` as a @Rule in Junit 4 or as @ExtendWith for Junit 5:
 ##### Example: Using Junit4 @Rule to get an embedded Gigaspace instance
 ```java
 public class EmbeddedSpaceAsRuleTest {
@@ -76,9 +76,9 @@ public class EmbeddedSpaceAsRuleTest {
 	}
 }
 ```
-##### Example: Using Junit 5 @ExtendWith to get embeddedGigaspace instance
+##### Example: Using Junit 5 @ExtendWith to get EmbeddedSpace instance
 ```java
-@ExtendWith(GigaspaceExtension.class)
+@ExtendWith(EmbeddedSpace.class)
 class GigaspaceExtensionTest {
 
 	@Test
