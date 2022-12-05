@@ -45,17 +45,51 @@ class FruitTest {
   public void startFruitPu() {
       fruitPu.start();
   }
-  
-  @After                                 
-  public void stopFruitPu() {
-      fruitPu.stop();
-  }
-                                   
-  // Test cases against fruitPu
+
+	@After
+	public void stopFruitPu() {
+		fruitPu.stop();
+	}
+
+	// Test cases against fruitPu
 }
 
 ```
 
+#### Running an Embedded Gigaspace
+
+In case you only need access to gigaspace, you can use the ``EmbeddedSpace`` as a @Rule in Junit 4 or as an @ExtendWith for Junit 5:
+##### Example: Using Junit4 @Rule to get an embedded Gigaspace instance
+```java
+public class EmbeddedSpaceAsRuleTest {
+
+	@Rule
+	public final EmbeddedSpace embeddedSpace = new EmbeddedSpace("space-name");
+
+	@Test
+	public void testPersistingAndReading() {
+		GigaSpace gigaSpace = embeddedSpace.getGigaSpace();
+		gigaSpace.write(new FruitPojo("orange"));
+
+		FruitPojo fruit = gigaSpace.readById(FruitPojo.class, "orange");
+		assertNotNull(fruit);
+	}
+}
+```
+##### Example: Using Junit 5 @ExtendWith to get EmbeddedSpace instance
+```java
+@ExtendWith(EmbeddedSpace.class)
+class GigaspaceExtensionTest {
+
+	@Test
+	void testPersistingAndReading(GigaSpace gigaSpace) {
+		gigaSpace.write(new FruitPojo("orange"));
+
+		FruitPojo fruit = gigaSpace.readById(FruitPojo.class, "orange");
+		assertNotNull(fruit);
+	}
+}
+```
 ## ZooKeeper
 
 Since version `2.1.0` this library comes bundled with ZooKeeper, and switches to using a ZooKeeper based leader selector for GigaSpaces.
