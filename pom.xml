@@ -145,8 +145,10 @@
 		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
 		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
 
-		<spring-boot.version>2.6.7</spring-boot.version>
-		<gigaspaces.version>16.1.1</gigaspaces.version>
+		<!-- spring-boot 2.7.3 sets versions of spring-framework version to 5.3.22 and of
+		spring-security to 5.7.3 which matches the versions in GigaSpaces -->
+		<spring-boot.version>2.7.3</spring-boot.version>
+		<gigaspaces.version>16.2.1</gigaspaces.version>
 
 		<!-- this lib uses later versions of ZooKeeper & Curator than GigaSpaces -->
 		<zookeeper.version>3.8.0</zookeeper.version>
